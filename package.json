@@ -1,0 +1,28 @@
+{
+  "name": "flex-flight-tracker",
+  "version": "0.0.0",
+  "description": "Open source flight tracker using Leaflet.js and D3.js designed to consume Flight Stats Flex API position data",
+  "main": "Gruntfile.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/flightstats/flex-flight-tracker.git"
+  },
+  "author": "Client Team <client-team@flightstats.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flightstats/flex-flight-tracker/issues"
+  },
+  "homepage": "https://github.com/flightstats/flex-flight-tracker",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-uglify": "^0.5.0"
+  }
+}
