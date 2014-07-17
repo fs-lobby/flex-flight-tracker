@@ -28,10 +28,33 @@
     };
 
     var flightMap = new Map(mapConfig);
+    var flex = new Flex(mapConfig.flexConfig);
+    var airportId = window.location.search.replace("?airportId=", "");
 
-    flightMap.addFlight(flightId, function(err, flight) {
-      console.log(err, flight);
-      flight.panTo();
+    flex.fetchActiveIncomingFlightsForAirport(airportId, null, function(err, data) {
+      var row, flight;
+
+      if (data.flightTracks.length === 0) console.log("no incoming flight tracks");
+
+      for (var i = 0; i < data.flightTracks.length; i++) {
+        flight = data.flightTracks[i];
+        flightMap.addFlight(flight.flightId, function(err, flight) {
+          console.log(err, flight);
+        });
+      }
+    });
+
+    flex.fetchActiveOutgoingFlightsForAirport(airportId, null, function(err, data) {
+      var row, flight;
+
+      if (data.flightTracks.length === 0) console.log("no outgoing flight tracks");
+
+      for (var i = 0; i < data.flightTracks.length; i++) {
+        flight = data.flightTracks[i];
+        flightMap.addFlight(flight.flightId, function(err, flight) {
+          console.log(err, flight);
+        });
+      }
     });
 
     </script>
