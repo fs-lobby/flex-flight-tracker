@@ -1,7 +1,8 @@
 var fsBasePath = '/data/';
 
 var Map = function(config) {
-	var self = document.map = this;
+	console.log("map config", config);
+	var self = this;
 	config.subdomains = config.subdomains || 'abcd';
 	this.flexConfig = config.flexConfig;
 	this.flex = new Flex(this.flexConfig);
@@ -39,7 +40,7 @@ var Map = function(config) {
 
 	this.map.on('viewreset', function() {
 		// console.log('viewreset');
-	  // self.reset();
+	  self.reset();
 	});
 
 	this.map.on('zoomend', function() {
@@ -129,8 +130,10 @@ var Map = function(config) {
 
 Map.prototype.addFlight = function(flightId, done) {
 	var self = this;
+
 	self.flights[flightId] = new Flight(flightId, self.flightConfig, self);
 	self.flights[flightId].fetchFlightTracks(null, function(err, data, flight) {
+		console.log(flightId);
 		if (err) {
 			console.log(err);
 		}
@@ -138,6 +141,7 @@ Map.prototype.addFlight = function(flightId, done) {
 			console.log(data.error.errorMessage);
 		}
 		else {
+			console.log("initializing flight", flightId);
 			flight.initialize(data);
 		}
 		if (done != null) done(err, flight);

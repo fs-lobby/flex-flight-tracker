@@ -5,8 +5,6 @@ var Airport = function(airportData, config) {
 	this.lon = airportData.longitude;
 	this.icon = config.icon;
 };
-// https://api.flightstats.com/flex/flightstatus/rest/v2/jsonp/flight/track/349804685?appId=[id]&appKey=[key]&includeFlightPlan=true&maxPositions=50&extendedOptions=includeNewFields&sourceType=derived
-
 var Flex = function(config) {
   if (config == null) {
   	throw new Error('flex config required');
@@ -39,16 +37,16 @@ Flex.prototype.fetchAirportByCode = function(fsAirportCode, options, done) {
 	];
 
 	for (var option in options) {
-		airportPath.push('&');
-		airportPath.push(option);
-		airportPath.push('=');
-		airportPath.push(options[option]);
+	  airportPath.push('&');
+	  airportPath.push(option);
+	  airportPath.push('=');
+	  airportPath.push(options[option]);
 	}
 
 	airportPath = airportPath.join('');
 
 	jsonpRequest(airportPath, "callback", function(err, response) {
-		done(err, response);
+	  done(err, response);
 	});
 };
 
@@ -127,6 +125,7 @@ Flex.prototype.fetchActiveIncomingFlightsForAirport = function(fsAirportCode, op
 };
 
 Flex.prototype.fetchFlightTracksForFlight = function(flightId, options, done) {
+	console.log("fetchFlightTracksForFlight");
 	/* 
 	Options:
 	  - includeFlightPlan
@@ -155,8 +154,11 @@ Flex.prototype.fetchFlightTracksForFlight = function(flightId, options, done) {
 	  	
 	flightPath = flightPath.join('');
 
+	// var res = {"request":{"flightId":{"requested":"397615388","interpreted":397615388},"includeFlightPlan":{"requested":"true","interpreted":true},"maxPositions":{},"maxPositionAgeMinutes":{},"extendedOptions":{},"url":"https://api.flightstats.com/flex/flightstatus/rest/v2/jsonp/flight/track/397615388"},"appendix":{"airlines":[{"fs":"DL","iata":"DL","icao":"DAL","name":"Delta Air Lines","phoneNumber":"1-800-221-1212","active":true}],"airports":[{"fs":"PDX","iata":"PDX","icao":"KPDX","faa":"PDX","name":"Portland International Airport","street1":"7000 NE Airport Way","city":"Portland","cityCode":"PDX","stateCode":"OR","postalCode":"97218","countryCode":"US","countryName":"United States","regionName":"North America","timeZoneRegionName":"America/Los_Angeles","weatherZone":"ORZ006","localTime":"2014-06-30T12:38:17.031","utcOffsetHours":-7.0,"latitude":45.588995,"longitude":-122.592901,"elevationFeet":30,"classification":1,"active":true,"delayIndexUrl":"https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/PDX?codeType=fs","weatherUrl":"https://api.flightstats.com/flex/weather/rest/v1/json/all/PDX?codeType=fs"},{"fs":"MSP","iata":"MSP","icao":"KMSP","faa":"MSP","name":"Minneapolis-St. Paul International Airport","street1":"6040 28th Avenue South","city":"Minneapolis","cityCode":"MSP","stateCode":"MN","postalCode":"55450","countryCode":"US","countryName":"United States","regionName":"North America","timeZoneRegionName":"America/Chicago","weatherZone":"MNZ060","localTime":"2014-06-30T14:38:17.031","utcOffsetHours":-5.0,"latitude":44.883016,"longitude":-93.210922,"elevationFeet":841,"classification":1,"active":true,"delayIndexUrl":"https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/MSP?codeType=fs","weatherUrl":"https://api.flightstats.com/flex/weather/rest/v1/json/all/MSP?codeType=fs"}]},"flightTrack":{"flightId":397615388,"carrierFsCode":"DL","flightNumber":"2200","departureAirportFsCode":"PDX","arrivalAirportFsCode":"MSP","departureDate":{"dateLocal":"2014-06-30T11:28:00.000","dateUtc":"2014-06-30T18:28:00.000Z"},"equipment":"A320","bearing":86.98494740469317,"heading":89.59386132012935,"positions":[{"lon":-112.8783,"lat":45.8631,"speedMph":573,"altitudeFt":33100,"source":"ASDI","date":"2014-06-30T19:27:14.000Z"},{"lon":-113.0803,"lat":45.8622,"speedMph":578,"altitudeFt":34800,"source":"ASDI","date":"2014-06-30T19:26:12.000Z"},{"lon":-113.2831,"lat":45.8614,"speedMph":583,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:25:10.000Z"},{"lon":-113.5022,"lat":45.86,"speedMph":588,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:24:08.000Z"},{"lon":-113.7425,"lat":45.8589,"speedMph":586,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:23:06.000Z"},{"lon":-113.7822,"lat":45.8586,"speedMph":587,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:22:49.000Z"},{"lon":-113.9453,"lat":45.8578,"speedMph":583,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:22:04.000Z"},{"lon":-113.9856,"lat":45.8575,"speedMph":585,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:21:48.000Z"},{"lon":-114.1492,"lat":45.8558,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:21:01.000Z"},{"lon":-114.1881,"lat":45.8542,"speedMph":583,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:20:47.000Z"},{"lon":-114.3494,"lat":45.8528,"speedMph":583,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:19:59.000Z"},{"lon":-114.3892,"lat":45.8522,"speedMph":583,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:19:45.000Z"},{"lon":-114.5439,"lat":45.8494,"speedMph":583,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:18:57.000Z"},{"lon":-114.5831,"lat":45.8494,"speedMph":582,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:18:44.000Z"},{"lon":-114.7456,"lat":45.8464,"speedMph":585,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:17:55.000Z"},{"lon":-114.7853,"lat":45.8456,"speedMph":582,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:17:43.000Z"},{"lon":-114.9869,"lat":45.8422,"speedMph":586,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:16:53.000Z"},{"lon":-115.0261,"lat":45.8411,"speedMph":582,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:16:41.000Z"},{"lon":-115.1875,"lat":45.8375,"speedMph":588,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:15:51.000Z"},{"lon":-115.2278,"lat":45.8369,"speedMph":582,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:15:40.000Z"},{"lon":-115.2278,"lat":45.8369,"speedMph":582,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:15:40.000Z"},{"lon":-115.3883,"lat":45.8342,"speedMph":589,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:14:49.000Z"},{"lon":-115.3883,"lat":45.8342,"speedMph":589,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:14:49.000Z"},{"lon":-115.4289,"lat":45.8325,"speedMph":583,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:14:39.000Z"},{"lon":-115.4289,"lat":45.8325,"speedMph":583,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:14:39.000Z"},{"lon":-115.5967,"lat":45.8306,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:13:47.000Z"},{"lon":-115.5967,"lat":45.8306,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:13:47.000Z"},{"lon":-115.5967,"lat":45.8306,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:13:47.000Z"},{"lon":-115.6339,"lat":45.8278,"speedMph":585,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:13:37.000Z"},{"lon":-115.6339,"lat":45.8278,"speedMph":585,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:13:37.000Z"},{"lon":-115.6339,"lat":45.8278,"speedMph":585,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:13:37.000Z"},{"lon":-115.8006,"lat":45.8253,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:12:45.000Z"},{"lon":-115.8006,"lat":45.8253,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:12:45.000Z"},{"lon":-115.8006,"lat":45.8253,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:12:45.000Z"},{"lon":-115.8364,"lat":45.8231,"speedMph":583,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:12:36.000Z"},{"lon":-115.8364,"lat":45.8231,"speedMph":583,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:12:36.000Z"},{"lon":-115.8364,"lat":45.8231,"speedMph":583,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:12:36.000Z"},{"lon":-116.0006,"lat":45.8192,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:11:43.000Z"},{"lon":-116.0006,"lat":45.8192,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:11:43.000Z"},{"lon":-116.0006,"lat":45.8192,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:11:43.000Z"},{"lon":-116.0378,"lat":45.8172,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:11:35.000Z"},{"lon":-116.0378,"lat":45.8172,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:11:35.000Z"},{"lon":-116.0378,"lat":45.8172,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:11:35.000Z"},{"lon":-116.2414,"lat":45.8122,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:10:41.000Z"},{"lon":-116.2414,"lat":45.8122,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:10:41.000Z"},{"lon":-116.2414,"lat":45.8122,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:10:41.000Z"},{"lon":-116.2389,"lat":45.8114,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:10:34.000Z"},{"lon":-116.2389,"lat":45.8114,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:10:34.000Z"},{"lon":-116.2389,"lat":45.8114,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:10:34.000Z"},{"lon":-116.4439,"lat":45.8058,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:09:39.000Z"},{"lon":-116.4439,"lat":45.8058,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:09:39.000Z"},{"lon":-116.4439,"lat":45.8058,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:09:39.000Z"},{"lon":-116.4414,"lat":45.805,"speedMph":581,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:09:32.000Z"},{"lon":-116.4414,"lat":45.805,"speedMph":581,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:09:32.000Z"},{"lon":-116.4414,"lat":45.805,"speedMph":581,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:09:32.000Z"},{"lon":-116.6444,"lat":45.7992,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:08:37.000Z"},{"lon":-116.6444,"lat":45.7992,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:08:37.000Z"},{"lon":-116.6444,"lat":45.7992,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:08:37.000Z"},{"lon":-116.6408,"lat":45.7981,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:08:31.000Z"},{"lon":-116.6408,"lat":45.7981,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:08:31.000Z"},{"lon":-116.6408,"lat":45.7981,"speedMph":582,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:08:31.000Z"},{"lon":-116.8456,"lat":45.7922,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:07:35.000Z"},{"lon":-116.8456,"lat":45.7922,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:07:35.000Z"},{"lon":-116.8456,"lat":45.7922,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:07:35.000Z"},{"lon":-116.8806,"lat":45.7897,"speedMph":581,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:07:30.000Z"},{"lon":-116.8806,"lat":45.7897,"speedMph":581,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:07:30.000Z"},{"lon":-116.8806,"lat":45.7897,"speedMph":581,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:07:30.000Z"},{"lon":-117.0458,"lat":45.7844,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:06:33.000Z"},{"lon":-117.0458,"lat":45.7844,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:06:33.000Z"},{"lon":-117.0458,"lat":45.7844,"speedMph":580,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:06:33.000Z"},{"lon":-117.0836,"lat":45.7833,"speedMph":579,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:06:28.000Z"},{"lon":-117.0836,"lat":45.7833,"speedMph":579,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:06:28.000Z"},{"lon":-117.0836,"lat":45.7833,"speedMph":579,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:06:28.000Z"},{"lon":-117.2469,"lat":45.7772,"speedMph":578,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:05:30.000Z"},{"lon":-117.2469,"lat":45.7772,"speedMph":578,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:05:30.000Z"},{"lon":-117.2469,"lat":45.7772,"speedMph":578,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:05:30.000Z"},{"lon":-117.2833,"lat":45.7758,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:05:27.000Z"},{"lon":-117.2833,"lat":45.7758,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:05:27.000Z"},{"lon":-117.2833,"lat":45.7758,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:05:27.000Z"},{"lon":-117.4486,"lat":45.7692,"speedMph":578,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:04:28.000Z"},{"lon":-117.4486,"lat":45.7692,"speedMph":578,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:04:28.000Z"},{"lon":-117.4486,"lat":45.7692,"speedMph":578,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:04:28.000Z"},{"lon":-117.4833,"lat":45.7681,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:04:26.000Z"},{"lon":-117.4833,"lat":45.7681,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:04:26.000Z"},{"lon":-117.4833,"lat":45.7681,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:04:26.000Z"},{"lon":-117.6875,"lat":45.76,"speedMph":578,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:03:26.000Z"},{"lon":-117.6875,"lat":45.76,"speedMph":578,"altitudeFt":35000,"source":"ASDI","date":"2014-06-30T19:03:26.000Z"},{"lon":-117.6822,"lat":45.7603,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:03:24.000Z"},{"lon":-117.6822,"lat":45.7603,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:03:24.000Z"},{"lon":-117.88,"lat":45.7508,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:02:24.000Z"},{"lon":-117.88,"lat":45.7508,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:02:24.000Z"},{"lon":-117.8814,"lat":45.7508,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:02:23.000Z"},{"lon":-117.8814,"lat":45.7508,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:02:23.000Z"},{"lon":-117.8814,"lat":45.7508,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:02:23.000Z"},{"lon":-118.0783,"lat":45.7417,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:01:22.000Z"},{"lon":-118.0789,"lat":45.7417,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:01:22.000Z"},{"lon":-118.0783,"lat":45.7417,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:01:22.000Z"},{"lon":-118.0789,"lat":45.7417,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:01:22.000Z"},{"lon":-118.0783,"lat":45.7417,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:01:22.000Z"},{"lon":-118.0789,"lat":45.7417,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:01:22.000Z"},{"lon":-118.2761,"lat":45.7328,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:00:20.000Z"},{"lon":-118.2769,"lat":45.7331,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:00:20.000Z"},{"lon":-118.2761,"lat":45.7328,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:00:20.000Z"},{"lon":-118.2769,"lat":45.7331,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:00:20.000Z"},{"lon":-118.2761,"lat":45.7328,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:00:20.000Z"},{"lon":-118.2769,"lat":45.7331,"speedMph":576,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T19:00:20.000Z"},{"lon":-118.5144,"lat":45.7219,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T18:59:19.000Z"},{"lon":-118.5144,"lat":45.7219,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T18:59:19.000Z"},{"lon":-118.5144,"lat":45.7219,"speedMph":578,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T18:59:19.000Z"},{"lon":-118.5131,"lat":45.7219,"speedMph":580,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T18:59:18.000Z"},{"lon":-118.5131,"lat":45.7219,"speedMph":580,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T18:59:18.000Z"},{"lon":-118.5131,"lat":45.7219,"speedMph":580,"altitudeFt":34900,"source":"ASDI","date":"2014-06-30T18:59:18.000Z"},{"lon":-118.7108,"lat":45.7111,"speedMph":580,"altitudeFt":34800,"source":"ASDI","date":"2014-06-30T18:58:18.000Z"},{"lon":-118.7108,"lat":45.7111,"speedMph":580,"altitudeFt":34800,"source":"ASDI","date":"2014-06-30T18:58:18.000Z"},{"lon":-118.7108,"lat":45.7111,"speedMph":580,"altitudeFt":34800,"source":"ASDI","date":"2014-06-30T18:58:18.000Z"},{"lon":-118.7108,"lat":45.7111,"speedMph":580,"altitudeFt":34800,"source":"ASDI","date":"2014-06-30T18:58:18.000Z"},{"lon":-118.7094,"lat":45.7108,"speedMph":585,"altitudeFt":34800,"source":"ASDI","date":"2014-06-30T18:58:16.000Z"},{"lon":-118.7094,"lat":45.7108,"speedMph":585,"altitudeFt":34800,"source":"ASDI","date":"2014-06-30T18:58:16.000Z"},{"lon":-118.7094,"lat":45.7108,"speedMph":585,"altitudeFt":34800,"source":"ASDI","date":"2014-06-30T18:58:16.000Z"},{"lon":-118.7094,"lat":45.7108,"speedMph":585,"altitudeFt":34800,"source":"ASDI","date":"2014-06-30T18:58:16.000Z"},{"lon":-118.9092,"lat":45.7003,"speedMph":585,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:16.000Z"},{"lon":-118.9092,"lat":45.7003,"speedMph":585,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:16.000Z"},{"lon":-118.9092,"lat":45.7003,"speedMph":585,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:16.000Z"},{"lon":-118.9092,"lat":45.7003,"speedMph":585,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:16.000Z"},{"lon":-118.9092,"lat":45.7003,"speedMph":585,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:16.000Z"},{"lon":-118.9081,"lat":45.7,"speedMph":587,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:15.000Z"},{"lon":-118.9081,"lat":45.7,"speedMph":587,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:15.000Z"},{"lon":-118.9081,"lat":45.7,"speedMph":587,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:15.000Z"},{"lon":-118.9081,"lat":45.7,"speedMph":587,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:15.000Z"},{"lon":-118.9081,"lat":45.7,"speedMph":587,"altitudeFt":34200,"source":"ASDI","date":"2014-06-30T18:57:15.000Z"},{"lon":-119.1094,"lat":45.7042,"speedMph":586,"altitudeFt":33400,"source":"ASDI","date":"2014-06-30T18:56:15.000Z"},{"lon":-119.1094,"lat":45.7042,"speedMph":586,"altitudeFt":33400,"source":"ASDI","date":"2014-06-30T18:56:15.000Z"},{"lon":-119.1094,"lat":45.7042,"speedMph":586,"altitudeFt":33400,"source":"ASDI","date":"2014-06-30T18:56:15.000Z"},{"lon":-119.1094,"lat":45.7042,"speedMph":586,"altitudeFt":33400,"source":"ASDI","date":"2014-06-30T18:56:15.000Z"},{"lon":-119.1086,"lat":45.7039,"speedMph":588,"altitudeFt":33400,"source":"ASDI","date":"2014-06-30T18:56:12.000Z"},{"lon":-119.1086,"lat":45.7039,"speedMph":588,"altitudeFt":33400,"source":"ASDI","date":"2014-06-30T18:56:12.000Z"},{"lon":-119.1086,"lat":45.7039,"speedMph":588,"altitudeFt":33400,"source":"ASDI","date":"2014-06-30T18:56:12.000Z"},{"lon":-119.1086,"lat":45.7039,"speedMph":588,"altitudeFt":33400,"source":"ASDI","date":"2014-06-30T18:56:12.000Z"},{"lon":-119.1086,"lat":45.7039,"speedMph":588,"altitudeFt":33400,"source":"ASDI","date":"2014-06-30T18:56:12.000Z"},{"lon":-119.3114,"lat":45.7103,"speedMph":583,"altitudeFt":32500,"source":"ASDI","date":"2014-06-30T18:55:14.000Z"},{"lon":-119.3114,"lat":45.7103,"speedMph":583,"altitudeFt":32500,"source":"ASDI","date":"2014-06-30T18:55:14.000Z"},{"lon":-119.3114,"lat":45.7103,"speedMph":583,"altitudeFt":32500,"source":"ASDI","date":"2014-06-30T18:55:14.000Z"},{"lon":-119.3114,"lat":45.7103,"speedMph":583,"altitudeFt":32500,"source":"ASDI","date":"2014-06-30T18:55:14.000Z"},{"lon":-119.3103,"lat":45.71,"speedMph":588,"altitudeFt":32500,"source":"ASDI","date":"2014-06-30T18:55:10.000Z"},{"lon":-119.3103,"lat":45.71,"speedMph":588,"altitudeFt":32500,"source":"ASDI","date":"2014-06-30T18:55:10.000Z"},{"lon":-119.3103,"lat":45.71,"speedMph":588,"altitudeFt":32500,"source":"ASDI","date":"2014-06-30T18:55:10.000Z"},{"lon":-119.5128,"lat":45.7142,"speedMph":583,"altitudeFt":31700,"source":"ASDI","date":"2014-06-30T18:54:12.000Z"},{"lon":-119.5128,"lat":45.7142,"speedMph":583,"altitudeFt":31700,"source":"ASDI","date":"2014-06-30T18:54:12.000Z"},{"lon":-119.5128,"lat":45.7142,"speedMph":583,"altitudeFt":31700,"source":"ASDI","date":"2014-06-30T18:54:12.000Z"},{"lon":-119.5511,"lat":45.7153,"speedMph":590,"altitudeFt":31400,"source":"ASDI","date":"2014-06-30T18:54:08.000Z"},{"lon":-119.5511,"lat":45.7153,"speedMph":590,"altitudeFt":31400,"source":"ASDI","date":"2014-06-30T18:54:08.000Z"},{"lon":-119.5511,"lat":45.7153,"speedMph":590,"altitudeFt":31400,"source":"ASDI","date":"2014-06-30T18:54:08.000Z"},{"lon":-119.7111,"lat":45.7183,"speedMph":593,"altitudeFt":30600,"source":"ASDI","date":"2014-06-30T18:53:11.000Z"},{"lon":-119.7111,"lat":45.7183,"speedMph":593,"altitudeFt":30600,"source":"ASDI","date":"2014-06-30T18:53:11.000Z"},{"lon":-119.7111,"lat":45.7183,"speedMph":593,"altitudeFt":30600,"source":"ASDI","date":"2014-06-30T18:53:11.000Z"},{"lon":-119.7111,"lat":45.7183,"speedMph":593,"altitudeFt":30600,"source":"ASDI","date":"2014-06-30T18:53:11.000Z"},{"lon":-119.7539,"lat":45.7208,"speedMph":590,"altitudeFt":30300,"source":"ASDI","date":"2014-06-30T18:53:06.000Z"},{"lon":-119.7539,"lat":45.7208,"speedMph":590,"altitudeFt":30300,"source":"ASDI","date":"2014-06-30T18:53:06.000Z"},{"lon":-119.7539,"lat":45.7208,"speedMph":590,"altitudeFt":30300,"source":"ASDI","date":"2014-06-30T18:53:06.000Z"},{"lon":-119.7539,"lat":45.7208,"speedMph":590,"altitudeFt":30300,"source":"ASDI","date":"2014-06-30T18:53:06.000Z"},{"lon":-119.9147,"lat":45.7219,"speedMph":591,"altitudeFt":29400,"source":"ASDI","date":"2014-06-30T18:52:10.000Z"},{"lon":-119.9147,"lat":45.7219,"speedMph":591,"altitudeFt":29400,"source":"ASDI","date":"2014-06-30T18:52:10.000Z"},{"lon":-119.9147,"lat":45.7219,"speedMph":591,"altitudeFt":29400,"source":"ASDI","date":"2014-06-30T18:52:10.000Z"},{"lon":-119.9147,"lat":45.7219,"speedMph":591,"altitudeFt":29400,"source":"ASDI","date":"2014-06-30T18:52:10.000Z"},{"lon":-119.9575,"lat":45.7253,"speedMph":589,"altitudeFt":29200,"source":"ASDI","date":"2014-06-30T18:52:04.000Z"},{"lon":-119.9575,"lat":45.7253,"speedMph":589,"altitudeFt":29200,"source":"ASDI","date":"2014-06-30T18:52:04.000Z"},{"lon":-119.9575,"lat":45.7253,"speedMph":589,"altitudeFt":29200,"source":"ASDI","date":"2014-06-30T18:52:04.000Z"},{"lon":-119.9575,"lat":45.7253,"speedMph":589,"altitudeFt":29200,"source":"ASDI","date":"2014-06-30T18:52:04.000Z"},{"lon":-120.1197,"lat":45.7272,"speedMph":582,"altitudeFt":28400,"source":"ASDI","date":"2014-06-30T18:51:08.000Z"},{"lon":-120.1197,"lat":45.7272,"speedMph":582,"altitudeFt":28400,"source":"ASDI","date":"2014-06-30T18:51:08.000Z"},{"lon":-120.1197,"lat":45.7272,"speedMph":582,"altitudeFt":28400,"source":"ASDI","date":"2014-06-30T18:51:08.000Z"},{"lon":-120.1197,"lat":45.7272,"speedMph":582,"altitudeFt":28400,"source":"ASDI","date":"2014-06-30T18:51:08.000Z"},{"lon":-120.1622,"lat":45.7286,"speedMph":580,"altitudeFt":28100,"source":"ASDI","date":"2014-06-30T18:51:02.000Z"},{"lon":-120.1622,"lat":45.7286,"speedMph":580,"altitudeFt":28100,"source":"ASDI","date":"2014-06-30T18:51:02.000Z"},{"lon":-120.1622,"lat":45.7286,"speedMph":580,"altitudeFt":28100,"source":"ASDI","date":"2014-06-30T18:51:02.000Z"},{"lon":-120.1622,"lat":45.7286,"speedMph":580,"altitudeFt":28100,"source":"ASDI","date":"2014-06-30T18:51:02.000Z"},{"lon":-120.3614,"lat":45.7311,"speedMph":573,"altitudeFt":27300,"source":"ASDI","date":"2014-06-30T18:50:07.000Z"},{"lon":-120.3614,"lat":45.7311,"speedMph":573,"altitudeFt":27300,"source":"ASDI","date":"2014-06-30T18:50:07.000Z"},{"lon":-120.3614,"lat":45.7311,"speedMph":573,"altitudeFt":27300,"source":"ASDI","date":"2014-06-30T18:50:07.000Z"},{"lon":-120.3614,"lat":45.7311,"speedMph":573,"altitudeFt":27300,"source":"ASDI","date":"2014-06-30T18:50:07.000Z"},{"lon":-120.3642,"lat":45.7322,"speedMph":565,"altitudeFt":27300,"source":"ASDI","date":"2014-06-30T18:49:59.000Z"},{"lon":-120.3642,"lat":45.7322,"speedMph":565,"altitudeFt":27300,"source":"ASDI","date":"2014-06-30T18:49:59.000Z"},{"lon":-120.3642,"lat":45.7322,"speedMph":565,"altitudeFt":27300,"source":"ASDI","date":"2014-06-30T18:49:59.000Z"},{"lon":-120.3642,"lat":45.7322,"speedMph":565,"altitudeFt":27300,"source":"ASDI","date":"2014-06-30T18:49:59.000Z"},{"lon":-120.5656,"lat":45.7356,"speedMph":563,"altitudeFt":26300,"source":"ASDI","date":"2014-06-30T18:49:05.000Z"},{"lon":-120.5656,"lat":45.7356,"speedMph":563,"altitudeFt":26300,"source":"ASDI","date":"2014-06-30T18:49:05.000Z"},{"lon":-120.5656,"lat":45.7356,"speedMph":563,"altitudeFt":26300,"source":"ASDI","date":"2014-06-30T18:49:05.000Z"},{"lon":-120.5656,"lat":45.7356,"speedMph":563,"altitudeFt":26300,"source":"ASDI","date":"2014-06-30T18:49:05.000Z"},{"lon":-120.5636,"lat":45.7372,"speedMph":552,"altitudeFt":26300,"source":"ASDI","date":"2014-06-30T18:48:57.000Z"},{"lon":-120.5636,"lat":45.7372,"speedMph":552,"altitudeFt":26300,"source":"ASDI","date":"2014-06-30T18:48:57.000Z"},{"lon":-120.5636,"lat":45.7372,"speedMph":552,"altitudeFt":26300,"source":"ASDI","date":"2014-06-30T18:48:57.000Z"},{"lon":-120.5636,"lat":45.7372,"speedMph":552,"altitudeFt":26300,"source":"ASDI","date":"2014-06-30T18:48:57.000Z"},{"lon":-120.7603,"lat":45.7378,"speedMph":557,"altitudeFt":25300,"source":"ASDI","date":"2014-06-30T18:48:04.000Z"},{"lon":-120.7603,"lat":45.7378,"speedMph":557,"altitudeFt":25300,"source":"ASDI","date":"2014-06-30T18:48:04.000Z"},{"lon":-120.7603,"lat":45.7378,"speedMph":557,"altitudeFt":25300,"source":"ASDI","date":"2014-06-30T18:48:04.000Z"},{"lon":-120.7603,"lat":45.7378,"speedMph":557,"altitudeFt":25300,"source":"ASDI","date":"2014-06-30T18:48:04.000Z"},{"lon":-120.7603,"lat":45.7378,"speedMph":557,"altitudeFt":25300,"source":"ASDI","date":"2014-06-30T18:48:04.000Z"},{"lon":-120.7958,"lat":45.7383,"speedMph":542,"altitudeFt":25000,"source":"ASDI","date":"2014-06-30T18:47:55.000Z"},{"lon":-120.7958,"lat":45.7383,"speedMph":542,"altitudeFt":25000,"source":"ASDI","date":"2014-06-30T18:47:55.000Z"},{"lon":-120.7958,"lat":45.7383,"speedMph":542,"altitudeFt":25000,"source":"ASDI","date":"2014-06-30T18:47:55.000Z"},{"lon":-120.7958,"lat":45.7383,"speedMph":542,"altitudeFt":25000,"source":"ASDI","date":"2014-06-30T18:47:55.000Z"},{"lon":-120.7958,"lat":45.7383,"speedMph":542,"altitudeFt":25000,"source":"ASDI","date":"2014-06-30T18:47:55.000Z"},{"lon":-120.9547,"lat":45.7406,"speedMph":539,"altitudeFt":24100,"source":"ASDI","date":"2014-06-30T18:47:03.000Z"},{"lon":-120.9547,"lat":45.7406,"speedMph":539,"altitudeFt":24100,"source":"ASDI","date":"2014-06-30T18:47:03.000Z"},{"lon":-120.9547,"lat":45.7406,"speedMph":539,"altitudeFt":24100,"source":"ASDI","date":"2014-06-30T18:47:03.000Z"},{"lon":-120.9547,"lat":45.7406,"speedMph":539,"altitudeFt":24100,"source":"ASDI","date":"2014-06-30T18:47:03.000Z"},{"lon":-120.9889,"lat":45.7408,"speedMph":531,"altitudeFt":23800,"source":"ASDI","date":"2014-06-30T18:46:53.000Z"},{"lon":-120.9889,"lat":45.7408,"speedMph":531,"altitudeFt":23800,"source":"ASDI","date":"2014-06-30T18:46:53.000Z"},{"lon":-120.9889,"lat":45.7408,"speedMph":531,"altitudeFt":23800,"source":"ASDI","date":"2014-06-30T18:46:53.000Z"},{"lon":-120.9889,"lat":45.7408,"speedMph":531,"altitudeFt":23800,"source":"ASDI","date":"2014-06-30T18:46:53.000Z"},{"lon":-121.1431,"lat":45.7425,"speedMph":535,"altitudeFt":22800,"source":"ASDI","date":"2014-06-30T18:46:01.000Z"},{"lon":-121.1431,"lat":45.7425,"speedMph":535,"altitudeFt":22800,"source":"ASDI","date":"2014-06-30T18:46:01.000Z"},{"lon":-121.1431,"lat":45.7425,"speedMph":535,"altitudeFt":22800,"source":"ASDI","date":"2014-06-30T18:46:01.000Z"},{"lon":-121.1431,"lat":45.7425,"speedMph":535,"altitudeFt":22800,"source":"ASDI","date":"2014-06-30T18:46:01.000Z"},{"lon":-121.1431,"lat":45.7425,"speedMph":535,"altitudeFt":22800,"source":"ASDI","date":"2014-06-30T18:46:01.000Z"},{"lon":-121.1769,"lat":45.7436,"speedMph":519,"altitudeFt":22500,"source":"ASDI","date":"2014-06-30T18:45:51.000Z"},{"lon":-121.1769,"lat":45.7436,"speedMph":519,"altitudeFt":22500,"source":"ASDI","date":"2014-06-30T18:45:51.000Z"},{"lon":-121.1769,"lat":45.7436,"speedMph":519,"altitudeFt":22500,"source":"ASDI","date":"2014-06-30T18:45:51.000Z"},{"lon":-121.1769,"lat":45.7436,"speedMph":519,"altitudeFt":22500,"source":"ASDI","date":"2014-06-30T18:45:51.000Z"},{"lon":-121.1769,"lat":45.7436,"speedMph":519,"altitudeFt":22500,"source":"ASDI","date":"2014-06-30T18:45:51.000Z"},{"lon":-121.3286,"lat":45.7428,"speedMph":518,"altitudeFt":21400,"source":"ASDI","date":"2014-06-30T18:45:00.000Z"},{"lon":-121.3286,"lat":45.7428,"speedMph":518,"altitudeFt":21400,"source":"ASDI","date":"2014-06-30T18:45:00.000Z"},{"lon":-121.3286,"lat":45.7428,"speedMph":518,"altitudeFt":21400,"source":"ASDI","date":"2014-06-30T18:45:00.000Z"},{"lon":-121.3286,"lat":45.7428,"speedMph":518,"altitudeFt":21400,"source":"ASDI","date":"2014-06-30T18:45:00.000Z"},{"lon":-121.3286,"lat":45.7428,"speedMph":518,"altitudeFt":21400,"source":"ASDI","date":"2014-06-30T18:45:00.000Z"},{"lon":-121.5089,"lat":45.745,"speedMph":509,"altitudeFt":20000,"source":"ASDI","date":"2014-06-30T18:43:58.000Z"},{"lon":-121.5089,"lat":45.745,"speedMph":509,"altitudeFt":20000,"source":"ASDI","date":"2014-06-30T18:43:58.000Z"},{"lon":-121.5089,"lat":45.745,"speedMph":509,"altitudeFt":20000,"source":"ASDI","date":"2014-06-30T18:43:58.000Z"},{"lon":-121.5089,"lat":45.745,"speedMph":509,"altitudeFt":20000,"source":"ASDI","date":"2014-06-30T18:43:58.000Z"},{"lon":-121.5089,"lat":45.745,"speedMph":509,"altitudeFt":20000,"source":"ASDI","date":"2014-06-30T18:43:58.000Z"},{"lon":-121.6864,"lat":45.7456,"speedMph":489,"altitudeFt":18400,"source":"ASDI","date":"2014-06-30T18:42:57.000Z"},{"lon":-121.6864,"lat":45.7456,"speedMph":489,"altitudeFt":18400,"source":"ASDI","date":"2014-06-30T18:42:57.000Z"},{"lon":-121.6864,"lat":45.7456,"speedMph":489,"altitudeFt":18400,"source":"ASDI","date":"2014-06-30T18:42:57.000Z"},{"lon":-121.6864,"lat":45.7456,"speedMph":489,"altitudeFt":18400,"source":"ASDI","date":"2014-06-30T18:42:57.000Z"},{"lon":-121.6864,"lat":45.7456,"speedMph":489,"altitudeFt":18400,"source":"ASDI","date":"2014-06-30T18:42:57.000Z"},{"lon":-121.8494,"lat":45.7481,"speedMph":481,"altitudeFt":17300,"source":"ASDI","date":"2014-06-30T18:41:56.000Z"},{"lon":-121.8494,"lat":45.7481,"speedMph":481,"altitudeFt":17300,"source":"ASDI","date":"2014-06-30T18:41:56.000Z"},{"lon":-121.8494,"lat":45.7481,"speedMph":481,"altitudeFt":17300,"source":"ASDI","date":"2014-06-30T18:41:56.000Z"},{"lon":-122.0275,"lat":45.7511,"speedMph":474,"altitudeFt":16000,"source":"ASDI","date":"2014-06-30T18:40:54.000Z"},{"lon":-122.0275,"lat":45.7511,"speedMph":474,"altitudeFt":16000,"source":"ASDI","date":"2014-06-30T18:40:54.000Z"},{"lon":-122.0275,"lat":45.7511,"speedMph":474,"altitudeFt":16000,"source":"ASDI","date":"2014-06-30T18:40:54.000Z"},{"lon":-122.0275,"lat":45.7511,"speedMph":474,"altitudeFt":16000,"source":"ASDI","date":"2014-06-30T18:40:54.000Z"},{"lon":-122.1931,"lat":45.7525,"speedMph":453,"altitudeFt":15700,"source":"ASDI","date":"2014-06-30T18:39:53.000Z"},{"lon":-122.1931,"lat":45.7525,"speedMph":453,"altitudeFt":15700,"source":"ASDI","date":"2014-06-30T18:39:53.000Z"},{"lon":-122.1931,"lat":45.7525,"speedMph":453,"altitudeFt":15700,"source":"ASDI","date":"2014-06-30T18:39:53.000Z"},{"lon":-122.1931,"lat":45.7525,"speedMph":453,"altitudeFt":15700,"source":"ASDI","date":"2014-06-30T18:39:53.000Z"},{"lon":-122.3517,"lat":45.7539,"speedMph":428,"source":"ASDI","date":"2014-06-30T18:38:51.000Z"},{"lon":-122.3517,"lat":45.7539,"speedMph":428,"source":"ASDI","date":"2014-06-30T18:38:51.000Z"},{"lon":-122.3517,"lat":45.7539,"speedMph":428,"source":"ASDI","date":"2014-06-30T18:38:51.000Z"},{"lon":-122.3517,"lat":45.7539,"speedMph":428,"source":"ASDI","date":"2014-06-30T18:38:51.000Z"},{"lon":-122.5133,"lat":45.7556,"speedMph":395,"source":"ASDI","date":"2014-06-30T18:37:50.000Z"},{"lon":-122.5133,"lat":45.7556,"speedMph":395,"source":"ASDI","date":"2014-06-30T18:37:50.000Z"},{"lon":-122.5133,"lat":45.7556,"speedMph":395,"source":"ASDI","date":"2014-06-30T18:37:50.000Z"},{"lon":-122.5133,"lat":45.7556,"speedMph":395,"source":"ASDI","date":"2014-06-30T18:37:50.000Z"},{"lon":-122.6497,"lat":45.7589,"speedMph":329,"source":"ASDI","date":"2014-06-30T18:36:49.000Z"},{"lon":-122.6497,"lat":45.7589,"speedMph":329,"source":"ASDI","date":"2014-06-30T18:36:49.000Z"},{"lon":-122.6497,"lat":45.7589,"speedMph":329,"source":"ASDI","date":"2014-06-30T18:36:49.000Z"},{"lon":-122.6497,"lat":45.7589,"speedMph":329,"source":"ASDI","date":"2014-06-30T18:36:49.000Z"},{"lon":-122.7564,"lat":45.7425,"speedMph":319,"altitudeFt":8400,"source":"ASDI","date":"2014-06-30T18:35:47.000Z"},{"lon":-122.7564,"lat":45.7425,"speedMph":319,"altitudeFt":8400,"source":"ASDI","date":"2014-06-30T18:35:47.000Z"},{"lon":-122.7564,"lat":45.7425,"speedMph":319,"altitudeFt":8400,"source":"ASDI","date":"2014-06-30T18:35:47.000Z"},{"lon":-122.7564,"lat":45.7425,"speedMph":319,"altitudeFt":8400,"source":"ASDI","date":"2014-06-30T18:35:47.000Z"},{"lon":-122.7864,"lat":45.7078,"speedMph":327,"altitudeFt":6900,"source":"ASDI","date":"2014-06-30T18:35:14.000Z"},{"lon":-122.7864,"lat":45.7078,"speedMph":327,"altitudeFt":6900,"source":"ASDI","date":"2014-06-30T18:35:14.000Z"},{"lon":-122.7864,"lat":45.7078,"speedMph":327,"altitudeFt":6900,"source":"ASDI","date":"2014-06-30T18:35:14.000Z"},{"lon":-122.7836,"lat":45.6722,"speedMph":307,"altitudeFt":5600,"source":"ASDI","date":"2014-06-30T18:34:46.000Z"},{"lon":-122.7439,"lat":45.645,"speedMph":326,"altitudeFt":3700,"source":"ASDI","date":"2014-06-30T18:34:13.000Z"},{"lon":-122.7439,"lat":45.645,"speedMph":326,"altitudeFt":3700,"source":"ASDI","date":"2014-06-30T18:34:13.000Z"},{"lon":-122.6919,"lat":45.6253,"speedMph":238,"altitudeFt":2400,"source":"ASDI","date":"2014-06-30T18:33:45.000Z"},{"lon":-122.6919,"lat":45.6253,"speedMph":238,"altitudeFt":2400,"source":"ASDI","date":"2014-06-30T18:33:45.000Z"},{"lon":-122.6467,"lat":45.6106,"speedMph":192,"altitudeFt":1900,"source":"ASDI","date":"2014-06-30T18:33:12.000Z"},{"lon":-122.6467,"lat":45.6106,"speedMph":192,"altitudeFt":1900,"source":"ASDI","date":"2014-06-30T18:33:12.000Z"},{"lon":-122.6114,"lat":45.5989,"speedMph":181,"source":"ASDI","date":"2014-06-30T18:32:35.000Z"}],"waypoints":[{"lon":-122.5833,"lat":45.5833},{"lon":-122.4667,"lat":45.5667},{"lon":-122.4333,"lat":45.55},{"lon":-122.4,"lat":45.55},{"lon":-122.3333,"lat":45.5333},{"lon":-122.3167,"lat":45.5333},{"lon":-122.2667,"lat":45.5667},{"lon":-122.25,"lat":45.5833},{"lon":-122.15,"lat":45.6333},{"lon":-122.0667,"lat":45.6667},{"lon":-121.85,"lat":45.7333},{"lon":-121.85,"lat":45.7333},{"lon":-121.85,"lat":45.7333},{"lon":-121.5667,"lat":45.7333},{"lon":-121.3,"lat":45.7333},{"lon":-121.0,"lat":45.7333},{"lon":-120.7333,"lat":45.7333},{"lon":-120.6,"lat":45.7333},{"lon":-120.5833,"lat":45.7333},{"lon":-120.1667,"lat":45.7167},{"lon":-120.0,"lat":45.7167},{"lon":-119.6667,"lat":45.7167},{"lon":-119.4667,"lat":45.7},{"lon":-119.3167,"lat":45.7},{"lon":-118.9667,"lat":45.6833},{"lon":-118.9333,"lat":45.6833},{"lon":-117.8667,"lat":45.75},{"lon":-117.7333,"lat":45.75},{"lon":-117.5,"lat":45.75},{"lon":-115.1667,"lat":45.8333},{"lon":-115.0,"lat":45.8333},{"lon":-114.7667,"lat":45.8333},{"lon":-112.8667,"lat":45.85},{"lon":-112.1667,"lat":45.85},{"lon":-110.9833,"lat":45.65},{"lon":-110.0,"lat":45.7167},{"lon":-108.6167,"lat":45.8},{"lon":-106.9667,"lat":45.6667},{"lon":-106.0,"lat":45.5667},{"lon":-104.6333,"lat":45.4333},{"lon":-103.1667,"lat":45.2667},{"lon":-101.7,"lat":45.0667},{"lon":-97.7333,"lat":44.75},{"lon":-96.55,"lat":44.6333},{"lon":-95.6667,"lat":44.5333},{"lon":-95.4,"lat":44.5},{"lon":-95.35,"lat":44.4833},{"lon":-95.2667,"lat":44.4833},{"lon":-95.1167,"lat":44.4667},{"lon":-94.9333,"lat":44.5},{"lon":-94.8667,"lat":44.5167},{"lon":-94.6,"lat":44.5833},{"lon":-94.3667,"lat":44.6333},{"lon":-94.3,"lat":44.65},{"lon":-94.15,"lat":44.6833},{"lon":-94.1167,"lat":44.6833},{"lon":-94.0667,"lat":44.7},{"lon":-93.9,"lat":44.7333},{"lon":-93.7167,"lat":44.7833},{"lon":-93.7167,"lat":44.7833},{"lon":-93.4833,"lat":44.8333},{"lon":-93.4333,"lat":44.85},{"lon":-93.3667,"lat":44.85},{"lon":-93.25,"lat":44.8667},{"lon":-93.2167,"lat":44.8667}],"legacyRoute":"KPDX.LAVAA5.PDT.J16.HIA.J151.BIL.J34.RWF.SKETR5.KMSP/2116"}};
+
+	// done(null, res);
+
 	jsonpRequest(flightPath, "callback", function(err, response) {
-		console.log(err, response);
 		done(err, response);
 	});
 };
@@ -201,17 +203,29 @@ Flex.prototype.fetchFlightsWithinBounds = function(bounds, options, done) {
 		done(err, response);
 	});
 };
+
+
+
 function jsonpRequest(url, callback, done) {
 	$.ajax({
-    url: url,
-    jsonp: callback,
-    dataType: "jsonp",
-    success: function(response) {
-      done(response.error, response);
-    },
-    error: function(xhr, ajaxOptions, err) {
-    	done(err);
-    }
+	  url: url,
+	  jsonp: callback,
+	  dataType: "jsonp",
+	  beforeSend: function(a,b,c) {
+	    // console.log("beforeSend", a, b, c);
+	  },
+	  success: function(response) {
+	    console.log("success", response);
+	    done(response.error, response);
+	  },
+	  error: function(xhr, ajaxOptions, err) {
+	    console.log("error", err);
+	    done(err);
+	  },
+	  complete: function(response) {
+	    // console.log("complete", response);
+	    // done(response);
+	  }
 	});
 }
 'use strict';
@@ -219,7 +233,7 @@ function jsonpRequest(url, callback, done) {
 var Flight = function(flightId, config, map) {
   var self = this;
   this.flex = new Flex(config.flexConfig);
-	this.flightId = flightId;
+  this.flightId = flightId;
   this.map = map;
   this.planeIcon = config.icon || 'M11.544,23.594c0.3-0.008,0.498,0.041,0.509,0.316s0.447,0.236,0.447,0.236s0.437,0.039,0.447-0.236 c0.012-0.275,0.209-0.324,0.509-0.316c0.233,0.004,1.563,0.521,2.243,0.641c0.668,0.119,1.425-0.398-0.043-1.387 c-0.555-0.373-1.594-1.127-1.807-1.355c-0.143-0.154-0.129-3.689-0.142-4.832s0-2.453,0-2.453s0.052-0.588,0.122-0.594 c0.071-0.008,7.27,2.914,8.619,3.617c1.35,0.705,2.569,1.334,2.566,0.367c0,0,0.214-1.195-3.145-3.332 c-3.358-2.138-3.764-2.522-3.764-2.522l-0.464-0.328c0.001-0.019,0.006-0.036,0.006-0.055V10.25c0-0.441-0.357-0.798-0.799-0.798 s-0.799,0.357-0.799,0.798v0.042l-2.066-1.458c0,0-0.101-0.363-0.112-0.556c-0.014-0.194,0.06-3.191-0.026-4.249 c-0.071-0.884-0.524-3.28-1.346-3.28l0,0l0,0c-0.821,0-1.274,2.396-1.346,3.28c-0.086,1.058-0.013,4.055-0.026,4.249 c-0.013,0.193-0.113,0.556-0.113,0.556l-2.066,1.458V10.25c0-0.441-0.357-0.798-0.798-0.798c-0.44,0-0.799,0.357-0.799,0.798v1.111 c0,0.019,0.004,0.036,0.005,0.055l-0.464,0.328c0,0-0.404,0.384-3.762,2.522c-3.358,2.137-3.146,3.332-3.146,3.332 c-0.002,0.967,1.217,0.338,2.567-0.367c1.35-0.703,8.547-3.625,8.619-3.617c0.071,0.006,0.123,0.594,0.123,0.594 s0.013,1.311,0,2.453s0.001,4.678-0.142,4.832c-0.213,0.229-1.251,0.982-1.807,1.355c-1.467,0.988-0.711,1.506-0.043,1.387 C9.982,24.115,11.312,23.598,11.544,23.594z';
   this.planeIconUrl = config.planeIconUrl;
@@ -229,9 +243,9 @@ var Flight = function(flightId, config, map) {
   this.planeIconColor = config.planeIconColor || '#FFFFFF';
   setConfig('planeIconOpacity', config.planeIconOpacity, 1);
   setConfig('initialAnimationPathPointCount', config.initialAnimationPathPointCount, 10);
-	this.fsBasePath = config.fsBasePath || '/data/';
+  this.fsBasePath = config.fsBasePath || '/data/';
   this.pollingRate = config.pollingRate || 60000;
-	this.color = config.color || '#FFFFFF';
+  this.color = config.color || '#FFFFFF';
 
   this.planColor = config.planColor || '#FFFFFF';
   setConfig('planWidth', config.planWidth, 2);
@@ -274,15 +288,15 @@ var Flight = function(flightId, config, map) {
     throw new Error('Missing planeIcon or planeIconUrl');
   }
 
-	this.path = map.paths.append('path')
-		.attr('fill', 'none')
+  this.path = map.paths.append('path')
+    .attr('fill', 'none')
     .attr('stroke', 'none');
 
-	this.plan = map.plans.append('path')
-		.attr('fill', 'none')
-		.attr('stroke', this.planColor)
-		.attr('stroke-width', this.planWidth)
-		.attr('stroke-opacity', this.planOpacity);
+  this.plan = map.plans.append('path')
+    .attr('fill', 'none')
+    .attr('stroke', this.planColor)
+    .attr('stroke-width', this.planWidth)
+    .attr('stroke-opacity', this.planOpacity);
 
   this.arc = map.arcs.append('path')
     .attr('fill', 'none')
@@ -333,7 +347,7 @@ Flight.prototype.initialize = function(data) {
   if (data.flightTrack.positions.length > 5) {
     this.initializePositions();
     this.buildAirports();
-    // this.drawAirports();
+    this.drawAirports();
     this.drawPoints();
     this.drawArc();
     this.buildTransitions(true);
@@ -662,16 +676,16 @@ Flight.prototype.allTransitions = function() {
 
 Flight.prototype.draw = function(viewreset) {
   // console.log("draw", viewreset);
-	var self = this,
-	    position = {}, 
-	    nextPosition = {}, 
-	    transform = '';
+  var self = this,
+      position = {}, 
+      nextPosition = {}, 
+      transform = '';
 
   this.removePoints();
   this.cancelTransitions();
 
-	this.path.attr('d', self.map.invisibleLineProjector(self.reformatPositions(self.positions)));
-	this.pathLength = self.path.node().getTotalLength();
+  this.path.attr('d', self.map.invisibleLineProjector(self.reformatPositions(self.positions)));
+  this.pathLength = self.path.node().getTotalLength();
 
   this.drawPlan();
   // this.drawArc();
@@ -682,8 +696,8 @@ Flight.prototype.draw = function(viewreset) {
     this.untravelledPositions[i].drawn = false;
   }
 
-	this.buildTransitions(viewreset);
-	this.drawPoints();
+  this.buildTransitions(viewreset);
+  this.drawPoints();
 };
 
 Flight.prototype.cancelTransitions = function() {
@@ -749,9 +763,9 @@ Flight.prototype.startPolling = function() {
 
 Flight.prototype.updateData = function(data) {
   console.log(data);
-	var self = this;
-	var maxPositions = this.initialized ? 5 : null;
-	var i = 0, position = {}, nextPosition = {}, point = {}, alreadyAdded = false, obj = {};
+  var self = this;
+  var maxPositions = this.initialized ? 5 : null;
+  var i = 0, position = {}, nextPosition = {}, point = {}, alreadyAdded = false, obj = {};
   if ('departureAirportFsCode' in data.flightTrack) {
     self.departureAirportCode = data.flightTrack.departureAirportFsCode;
   }
@@ -770,7 +784,7 @@ Flight.prototype.updateData = function(data) {
       alreadyAdded = false;
       for (var j = 0; j < self.positions.length; j++) {
         if (self.positions[j].date === data.flightTrack.positions[i].date) {
-        	alreadyAdded = true;
+          alreadyAdded = true;
           break;
         }
       }
@@ -795,21 +809,21 @@ Flight.prototype.fetchFlightTracks = function(maxPositions, done) {
     includeFlightPlan: 'true'
   };
 
-	if (maxPositions != null) {
-		options.maxPositions = maxPositions;
-	}
+  if (maxPositions != null) {
+    options.maxPositions = maxPositions;
+  }
 
   this.flex.fetchFlightTracksForFlight(this.flightId, options, function(err, data) {
     console.log(err, data);
-    // done(err, data, self);
+    done(err, data, self);
   });
 };
 
 // these should be private, too
 
 Flight.prototype.calculateHeading = function(point1, point2) {
-	point1 = this.map.projectContainerPoint([point1.lon, point1.lat]);
-	point2 = this.map.projectContainerPoint([point2.lon, point2.lat]);
+  point1 = this.map.projectContainerPoint([point1.lon, point1.lat]);
+  point2 = this.map.projectContainerPoint([point2.lon, point2.lat]);
   var y = point2[1] - point1[1];
   var x = point2[0] - point1[0];
   if (x !== 0 && y !== 0) {
@@ -952,23 +966,23 @@ function distanceTo(positionA, positionB) {
 
 function randomHexColor() {
   var dayglo = {
-  	'green': '#6FFF00',
-  	'pink': '#FF00FF',
-  	'yellow': '#FFFF00',
-  	'blue': '#4D4DFF',
-  	'red': '#FE0001',
-  	'orange': '#FF4105',
-  	'purple': '#993CF3'
+    'green': '#6FFF00',
+    'pink': '#FF00FF',
+    'yellow': '#FFFF00',
+    'blue': '#4D4DFF',
+    'red': '#FE0001',
+    'orange': '#FF4105',
+    'purple': '#993CF3'
   };
   var result;
   var count = 0;
   for (var prop in dayglo) {
-  	if (Math.random() < 1 / ++count) {
-  		result = prop;
-  	}
+    if (Math.random() < 1 / ++count) {
+      result = prop;
+    }
   }
   return result;
-	// return '#' + Math.floor(Math.random() * 16777215).toString(16);
+  // return '#' + Math.floor(Math.random() * 16777215).toString(16);
 }
 
 function parseTransform(a) {
@@ -982,7 +996,8 @@ function parseTransform(a) {
 var fsBasePath = '/data/';
 
 var Map = function(config) {
-	var self = document.map = this;
+	console.log("map config", config);
+	var self = this;
 	config.subdomains = config.subdomains || 'abcd';
 	this.flexConfig = config.flexConfig;
 	this.flex = new Flex(this.flexConfig);
@@ -1020,7 +1035,7 @@ var Map = function(config) {
 
 	this.map.on('viewreset', function() {
 		// console.log('viewreset');
-	  // self.reset();
+	  self.reset();
 	});
 
 	this.map.on('zoomend', function() {
@@ -1110,8 +1125,10 @@ var Map = function(config) {
 
 Map.prototype.addFlight = function(flightId, done) {
 	var self = this;
+
 	self.flights[flightId] = new Flight(flightId, self.flightConfig, self);
 	self.flights[flightId].fetchFlightTracks(null, function(err, data, flight) {
+		console.log(flightId);
 		if (err) {
 			console.log(err);
 		}
@@ -1119,6 +1136,7 @@ Map.prototype.addFlight = function(flightId, done) {
 			console.log(data.error.errorMessage);
 		}
 		else {
+			console.log("initializing flight", flightId);
 			flight.initialize(data);
 		}
 		if (done != null) done(err, flight);

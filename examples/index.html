@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flight Tracker</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  </head>
+  <body>
+    <div class="container" id="container">
+      <table class="table">
+        <tr>
+          <th>ID</th>
+          <th>Airline</th>
+          <th>Flight Number</th>
+          <th>Destination</th>
+          <th>Departure Time</th>
+        </tr>
+      </table>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" charset="utf-8"></script>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="../src/flex.js"></script>
+    <script type="text/javascript">
+
+    var flexConfig = {
+      'appId': '__APP_ID__',
+      'appKey': '__APP_KEY__'
+    };
+
+    var flex = new Flex(flexConfig);
+    var airportId = window.location.search.replace("?airportId=", "");
+
+    var container = d3.select('#container');
+    var tbody = d3.select('tbody');
+
+    var rowClasses = {
+      "A": "success",
+      "C": "danger",
+      "R": "warning",
+      "S": "active"
+    };
+
+    container.insert('h1', 'table').text('Incoming Flights for ' + airportId);
+
+    flex.fetchActiveIncomingFlightsForAirport(airportId, null, function(err, data) {
+      var row, flight;
+
+      if (data.flightTracks.length === 0) console.log("no incoming flight tracks");
+
+      for (var i = 0; i < data.flightTracks.length; i++) {
+        flight = data.flightTracks[i];
+        row = tbody.append('tr');
+        row.append('td').append('a').text(flight.flightId).attr('href', 'test.html?flightId=' + flight.flightId);
+        row.append('td').text(flight.carrierFsCode);
+        row.append('td').text(flight.flightNumber);
+        row.append('td').text(flight.arrivalAirportFsCode);
+        row.append('td').text(new Date(Date.parse(flight.departureDate.dateLocal)).toString());
+      }
+    });
+
+    flex.fetchActiveOutgoingFlightsForAirport(airportId, null, function(err, data) {
+      var row, flight;
+
+      if (data.flightTracks.length === 0) console.log("no outgoing flight tracks");
+
+      for (var i = 0; i < data.flightTracks.length; i++) {
+        flight = data.flightTracks[i];
+        row = tbody.append('tr');
+        row.append('td').append('a').text(flight.flightId).attr('href', 'test.html?flightId=' + flight.flightId);
+        row.append('td').text(flight.carrierFsCode);
+        row.append('td').text(flight.flightNumber);
+        row.append('td').text(flight.arrivalAirportFsCode);
+        row.append('td').text(new Date(Date.parse(flight.departureDate.dateLocal)).toString());
+      }
+    });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flight Tracker</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+    <link rel='stylesheet' href='./stylesheets/map-style.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  </head>
+  <body>
+    <div class="map" id="map"></div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" charset="utf-8"></script>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+    <script src="../src/flex.js"></script>
+    <script src="../src/flight.js"></script>
+    <script src="../src/map.js"></script>
+    <script type="text/javascript">
+
+    var flightId = parseInt(window.location.search.replace("?flightId=", ""), 10);
+    
+    var mapConfig = {
+      'tiles': 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
+      'subdomains': '1234',
+      'flexConfig': {
+        'appId': '__APP_ID__',
+        'appKey': '__APP_KEY__'
+      }
+    };
+
+    var flightMap = new Map(mapConfig);
+
+    flightMap.addFlight(flightId, function(err, flight) {
+      console.log(err, flight);
+      flight.panTo();
+    });
+
+    </script>
+  </body>
+</html>
