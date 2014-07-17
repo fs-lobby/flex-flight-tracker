@@ -343,18 +343,18 @@ Flight.prototype.showMarker = function() {
 Flight.prototype.initialize = function(data) {
   // console.log("initialize", data);
   this.data = data;
-  // this.updateData(data);
+  this.updateData(data);
   if (data.flightTrack.positions.length > 5) {
-    // this.initializePositions();
-    // this.buildAirports();
-    // this.drawAirports();
-    // this.drawPoints();
-    // this.drawArc();
-    // this.buildTransitions(true);
-    // this.initialized = true;
-    // this.plane.attr('fill-opacity', this.planeIconOpacity);
-    // this.plane.attr('stroke-opacity', this.planeIconOpacity);
-    // this.startPolling();
+    this.initializePositions();
+    this.buildAirports();
+    this.drawAirports();
+    this.drawPoints();
+    this.drawArc();
+    this.buildTransitions(true);
+    this.initialized = true;
+    this.plane.attr('fill-opacity', this.planeIconOpacity);
+    this.plane.attr('stroke-opacity', this.planeIconOpacity);
+    this.startPolling();
   }
 };
 
@@ -1035,7 +1035,7 @@ var Map = function(config) {
 
 	this.map.on('viewreset', function() {
 		// console.log('viewreset');
-	  self.reset();
+	  // self.reset();
 	});
 
 	this.map.on('zoomend', function() {

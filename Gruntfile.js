@@ -20,9 +20,10 @@ module.exports = function (grunt) {
         },
         watch: {
             files: [
-                'src/*'
+                'src/*',
+                'examples/*.html'
             ],
-            tasks: ['concat']
+            tasks: ['concat', 'replace']
         },
         replace: {
             dist: {

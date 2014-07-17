@@ -40,7 +40,7 @@ var Map = function(config) {
 
 	this.map.on('viewreset', function() {
 		// console.log('viewreset');
-	  self.reset();
+	  // self.reset();
 	});
 
 	this.map.on('zoomend', function() {
