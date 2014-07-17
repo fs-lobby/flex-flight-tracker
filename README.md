@@ -27,4 +27,5 @@ You should be ready to get started. Run these two commands:
 npm start
 grunt watch
 ```
-You should now be able to access an index of flights at [localhost:8080/examples/replace/index.html?airportId=PDX](localhost:8080/examples/replace/index.html?airportId=PDX)
+You should now be able to access an index of flights at:
+[localhost:8080/examples/replace/index.html?airportId=PDX](http://localhost:8080/examples/replace/index.html?airportId=PDX)
