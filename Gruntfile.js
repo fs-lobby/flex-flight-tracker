@@ -35,6 +35,14 @@ module.exports = function (grunt) {
                         {
                             match: '__APP_KEY__',
                             replacement: config.appKey
+                        },
+                        {
+                            match: '../src',
+                            replacement: '../../src'
+                        },
+                        {
+                            match: './stylesheets',
+                            replacement: '.././stylesheets'
                         }
                     ]
                 },
