@@ -14,7 +14,7 @@ module.exports = function (grunt) {
         uglify: {
             js: {
                 files: {
-                    'examples/javascripts/tracker.js': ['dist/tracker.js']
+                    'dist/ugly.js': ['dist/tracker.js']
                 }
             }
         },
