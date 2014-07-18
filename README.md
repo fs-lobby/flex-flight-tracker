@@ -4,7 +4,7 @@ FlightStats Flex API Sample Flight Tracker
 BETA SOFTWARE!!!
 Help us improve this project by opening issues for any bugs or feature requests OR fork it, fix it and open a pull request.
 
-This project is intended to help developers easily add an animated flight tracker map to their applications. It's built using [Leaflet.js](www.leafletjs.com) and [D3.js](www.d3js.org) and compiled using [Grunt](www.gruntjs.com).
+This project is intended to help developers easily add an animated flight tracker map to their applications. It's built using [Leaflet.js](www.leafletjs.com) and [D3.js](www.d3js.org) and compiled using [Grunt](www.gruntjs.com). This project does not attempt to cover all of the edge cases and complexity required for a polished user-facing product. We hope to participate in refining this library as it's used but many of the implementation details of an animated flight tracker require the identifcation of edge cases in data.
 
 To get started install node.js and npm from [nodejs.org](http://nodejs.org/).
 You can now use npm to install the other dependencies:
