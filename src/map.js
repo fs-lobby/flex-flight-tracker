@@ -157,7 +157,17 @@ Map.prototype.addAirport = function(flight) {
 };
 
 Map.prototype.removeFlight = function(flight) {
+	flight.remove();
+	flight = {};
+	delete flight;
+};
 
+Map.prototype.removeFlights = function() {
+	for (var flight in this.flights) {
+		this.flights[flight].remove();
+		this.flights[flight] = {};
+		delete this.flights[flight];
+	}
 };
 
 Map.prototype.removeAirport = function(flight) {

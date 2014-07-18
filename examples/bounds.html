@@ -33,39 +33,48 @@
     var flightMap = new Map(mapConfig);
     var flex = new Flex(mapConfig.flexConfig);
     var airportId = window.location.search.replace("?airportId=", "");
+    var bounds;
 
-    flex.fetchActiveIncomingFlightsForAirport(airportId, null, function(err, data) {
-      for (var i = 0; i < data.appendix.airports.length; i++) {
-        var airport = data.appendix.airports[i];
-        if (airport.fs === airportId) {
-          flightMap.panTo([airport.latitude, airport.longitude]);
+    flightMap.map.on('viewreset', function() {
+      flightMap.removeFlights();
+      var mapBounds = flightMap.map.getBounds();
+      bounds = {
+        'topLat': mapBounds.getNorth(),
+        'leftLon': mapBounds.getWest(),
+        'bottomLat': mapBounds.getSouth(),
+        'rightLon': mapBounds.getEast()
+      };
+      flex.fetchFlightsWithinBounds(bounds, null, function(err, data) {
+        var flight;
+        for (var i = 0; i < data.flightPositions.length; i++) {
+          flight = data.flightPositions[i];
+          if (flight.flightId != null) {
+            flightMap.addFlight(flight.flightId);
+          }
         }
-      }
-      console.log(data);
-      var row, flight;
-
-      if (data.flightTracks.length === 0) console.log("no incoming flight tracks");
-
-      for (var i = 0; i < data.flightTracks.length; i++) {
-        flight = data.flightTracks[i];
-        flightMap.addFlight(flight.flightId, function(err, flight) {
-          console.log(err, flight);
-        });
-      }
+        setInterval(updateFlights, 60000);
+      });
     });
 
-    flex.fetchActiveOutgoingFlightsForAirport(airportId, null, function(err, data) {
-      var row, flight;
-
-      if (data.flightTracks.length === 0) console.log("no outgoing flight tracks");
-
-      for (var i = 0; i < data.flightTracks.length; i++) {
-        flight = data.flightTracks[i];
-        flightMap.addFlight(flight.flightId, function(err, flight) {
-          console.log(err, flight);
-        });
-      }
-    });
+    function updateFlights() {
+      flex.fetchFlightsWithinBounds(bounds, null, function(err, data) {
+        var flight;
+        for (var i = 0; i < data.flightPositions.length; i++) {
+          flight = data.flightPositions[i];
+          if (flightMap.flights[flight.flightId] != null) {
+            flightMap.flights[flight.flightId].stillInterior = true;
+          }
+          else {
+            flightMap.addFlight(flight.flightId);
+          }
+        }
+        for (var existingFlight in flightMap.flights) {
+          if (!flightMap.flights[existingFlight].stillInterior) {
+            flightMap.flights[existingFlight].remove();
+          }
+        }
+      });
+    }
 
     </script>
   </body>

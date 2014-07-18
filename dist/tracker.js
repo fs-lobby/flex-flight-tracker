@@ -215,7 +215,7 @@ function jsonpRequest(url, callback, done) {
 	    // console.log("beforeSend", a, b, c);
 	  },
 	  success: function(response) {
-	    console.log("success", response);
+	    // console.log("success", response);
 	    done(response.error, response);
 	  },
 	  error: function(xhr, ajaxOptions, err) {
@@ -242,11 +242,11 @@ var Flight = function(flightId, config, map) {
   this.planeIconRotation = config.planeIconRotation || 0;
   this.planeIconColor = config.planeIconColor || '#FFFFFF';
   setConfig('planeIconOpacity', config.planeIconOpacity, 1);
-  setConfig('initialAnimationPathPointCount', config.initialAnimationPathPointCount, 10);
+  setConfig('initialAnimationPathPointCount', config.initialAnimationPathPointCount, 15);
   this.fsBasePath = config.fsBasePath || '/data/';
   this.pollingRate = config.pollingRate || 60000;
   this.color = config.color || '#FFFFFF';
-
+  this.drawPlanFlag = config.drawPlan || false;
   this.planColor = config.planColor || '#FFFFFF';
   setConfig('planWidth', config.planWidth, 2);
   setConfig('planOpacity', config.planOpacity, 1);
@@ -258,6 +258,7 @@ var Flight = function(flightId, config, map) {
   this.pathColor = config.pathColor || '#FFFFFF';
   setConfig('pathWidth', config.pathWidth, 2);
   setConfig('pathOpacity', config.pathOpacity, 1);
+  setConfig('pathPointRadius', config.pathPointRadius, 1);
 
   this.data = {};
   this.transitions = {};
@@ -267,6 +268,7 @@ var Flight = function(flightId, config, map) {
   this.untravelledPositions = [];
   this.waypoints = [];
   this.points = [];
+  this.stillInterior = true;
 
   if (this.planeIconUrl != null && this.planeIconUrl.length > 0) {
     this.plane = map.planes.append('svg:image')
@@ -347,7 +349,7 @@ Flight.prototype.initialize = function(data) {
   if (data.flightTrack.positions.length > 5) {
     this.initializePositions();
     this.buildAirports();
-    this.drawAirports();
+    // this.drawAirports();
     this.drawPoints();
     this.drawArc();
     this.buildTransitions(true);
@@ -423,7 +425,7 @@ Flight.prototype.buildInterpolatedPositions = function() {
       multiplier = 0,
       flooredPathLength = Math.floor(this.pathLength),
       count = Math.floor(this.pathLength / interval);
-  console.log('flooredPathLength', flooredPathLength);
+  // console.log('flooredPathLength', flooredPathLength);
   for (i = 0; i < flooredPathLength; i += interval) {
     multiplier = i / flooredPathLength;
     point = this.path.node().getPointAtLength(multiplier * this.pathLength);
@@ -543,7 +545,7 @@ Flight.prototype.buildTransitions = function(viewreset) {
     this.addTransition(position, nextPosition, 0);
   }
   else {
-    console.log(this.flightId, this.untravelledPositions.length);
+    // console.log(this.flightId, this.untravelledPositions.length);
     for (var i = 0; i < this.untravelledPositions.length; i++) {
       nextPosition = this.untravelledPositions[i + 1];
       if (i === 0 && this.interpolatedPosition != null && viewreset) {
@@ -600,7 +602,7 @@ Flight.prototype.addTransition = function(position, nextPosition, index) {
       // self.untravelledPositions[0].svg.attr('fill-opacity', '1');
     })
     .each('start', function() {
-      
+      // self.untravelledPositions[0].svg.attr('fill-opacity', '1');
     });
 
   position.hasAnimation = true;
@@ -687,7 +689,9 @@ Flight.prototype.draw = function(viewreset) {
   this.path.attr('d', self.map.invisibleLineProjector(self.reformatPositions(self.positions)));
   this.pathLength = self.path.node().getTotalLength();
 
-  this.drawPlan();
+  if (this.drawPlanFlag) {
+    this.drawPlan();
+  }
   // this.drawArc();
   // this.drawAirports();
 
@@ -705,6 +709,7 @@ Flight.prototype.cancelTransitions = function() {
 };
 
 Flight.prototype.remove = function() {
+  console.log('removing flight', this.flightId);
   this.plane.remove();
   this.plan.remove();
   this.removePoints();
@@ -721,7 +726,9 @@ Flight.prototype.redraw = function() {
   this.pathLength = self.path.node().getTotalLength();
   this.buildInterpolatedPositions();
 
-  this.drawPlan();
+  if (this.drawPlanFlag) {
+    this.drawPlan();
+  }
 
   this.buildTransitions();
   this.addPoints();
@@ -762,7 +769,7 @@ Flight.prototype.startPolling = function() {
 };
 
 Flight.prototype.updateData = function(data) {
-  console.log(data);
+  // console.log(data);
   var self = this;
   var maxPositions = this.initialized ? 5 : null;
   var i = 0, position = {}, nextPosition = {}, point = {}, alreadyAdded = false, obj = {};
@@ -814,7 +821,7 @@ Flight.prototype.fetchFlightTracks = function(maxPositions, done) {
   }
 
   this.flex.fetchFlightTracksForFlight(this.flightId, options, function(err, data) {
-    console.log(err, data);
+    // console.log(err, data);
     done(err, data, self);
   });
 };
@@ -852,36 +859,17 @@ Flight.prototype.reformatPositions = function(positions) {
 Flight.prototype.transformGenerator = function(position, nextPosition) {
   var halfIcon = this.planeIconSize / 2,
       transform, translate, course, rotate;
-  // if (position != null && nextPosition != null) {
-  //   transform = this.map.projectContainerPoint([position.lon, position.lat]);
-  //   translate = 'translate(' + (transform[0] - halfIcon) + ',' + (transform[1] - halfIcon) + ')'; 
-  //   course = this.calculateHeading(position, nextPosition);
-  //   rotate = 'rotate(' + course + ', ' + halfIcon + ', ' + halfIcon + ')';
-  //   if (isNaN(course)) {
-  //     if (position.course != null) {
-  //       rotate = 'rotate(' + position.course + ', ' + halfIcon + ', ' + halfIcon + ')';
-  //     }
-  //     else {
-  //       rotate = 'rotate(0, ' + halfIcon + ', ' + halfIcon + ')';
-  //     }
-  //   }
-  //   return {
-  //     'translate': translate,
-  //     'rotate': rotate,
-  //     'transform': translate + '' + rotate
-  //   };
-  // }
   if (position != null && nextPosition != null) {
     transform = this.map.projectContainerPoint([position.lon, position.lat]);
-    translate = 'translate(' + transform[0] + ',' + transform[1] + ')'; 
+    translate = 'translate(' + (transform[0] - halfIcon) + ',' + (transform[1] - halfIcon) + ')'; 
     course = this.calculateHeading(position, nextPosition);
-    rotate = 'rotate(' + course + ')';
+    rotate = 'rotate(' + course + ', ' + halfIcon + ', ' + halfIcon + ')';
     if (isNaN(course)) {
       if (position.course != null) {
-        rotate = 'rotate(' + position.course + ')';
+        rotate = 'rotate(' + position.course + ', ' + halfIcon + ', ' + halfIcon + ')';
       }
       else {
-        rotate = 'rotate(0)';
+        rotate = 'rotate(0, ' + halfIcon + ', ' + halfIcon + ')';
       }
     }
     return {
@@ -890,6 +878,25 @@ Flight.prototype.transformGenerator = function(position, nextPosition) {
       'transform': translate + '' + rotate
     };
   }
+  // if (position != null && nextPosition != null) {
+  //   transform = this.map.projectContainerPoint([position.lon, position.lat]);
+  //   translate = 'translate(' + transform[0] + ',' + transform[1] + ')'; 
+  //   course = this.calculateHeading(position, nextPosition);
+  //   rotate = 'rotate(' + course + ')';
+  //   if (isNaN(course)) {
+  //     if (position.course != null) {
+  //       rotate = 'rotate(' + position.course + ')';
+  //     }
+  //     else {
+  //       rotate = 'rotate(0)';
+  //     }
+  //   }
+  //   return {
+  //     'translate': translate,
+  //     'rotate': rotate,
+  //     'transform': translate + '' + rotate
+  //   };
+  // }
   else if (position != null) {
     transform = this.map.projectContainerPoint([position[0], position[1]]);
     translate = 'translate(' + transform[0] + ',' + transform[1] + ')';
@@ -1152,7 +1159,17 @@ Map.prototype.addAirport = function(flight) {
 };
 
 Map.prototype.removeFlight = function(flight) {
+	flight.remove();
+	flight = {};
+	delete flight;
+};
 
+Map.prototype.removeFlights = function() {
+	for (var flight in this.flights) {
+		this.flights[flight].remove();
+		this.flights[flight] = {};
+		delete this.flights[flight];
+	}
 };
 
 Map.prototype.removeAirport = function(flight) {

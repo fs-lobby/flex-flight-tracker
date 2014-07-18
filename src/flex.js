@@ -208,7 +208,7 @@ function jsonpRequest(url, callback, done) {
 	    // console.log("beforeSend", a, b, c);
 	  },
 	  success: function(response) {
-	    console.log("success", response);
+	    // console.log("success", response);
 	    done(response.error, response);
 	  },
 	  error: function(xhr, ajaxOptions, err) {

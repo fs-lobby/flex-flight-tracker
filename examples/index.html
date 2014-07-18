@@ -7,6 +7,11 @@
   </head>
   <body>
     <div class="container" id="container">
+      <p>
+        <a href="#" id="airport-link" class="btn btn-primary" role="button">View Airport Map</a>
+        <a href="/examples/replace/bounds.html" class="btn btn-default" role="button">Explore by Bounds</a>
+      </p>
+
       <table class="table">
         <tr>
           <th>ID</th>
@@ -40,7 +45,8 @@
       "S": "active"
     };
 
-    container.insert('h1', 'table').text('Incoming Flights for ' + airportId);
+    d3.select('#airport-link').attr('href', '/examples/replace/airport.html?airportId=' + airportId);
+    container.insert('h1', 'p').text('Current Flights for ' + airportId);
 
     flex.fetchActiveIncomingFlightsForAirport(airportId, null, function(err, data) {
       var row, flight;
