@@ -1123,6 +1123,10 @@ var Map = function(config) {
   };
 };
 
+Map.prototype.panTo = function(latLng) {
+	this.map.panTo(latLng);
+};
+
 Map.prototype.addFlight = function(flightId, done) {
 	var self = this;
 

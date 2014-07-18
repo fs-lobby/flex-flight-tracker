@@ -32,6 +32,13 @@
     var airportId = window.location.search.replace("?airportId=", "");
 
     flex.fetchActiveIncomingFlightsForAirport(airportId, null, function(err, data) {
+      for (var i = 0; i < data.appendix.airports.length; i++) {
+        var airport = data.appendix.airports[i];
+        if (airport.fs === airportId) {
+          flightMap.panTo([airport.latitude, airport.longitude]);
+        }
+      }
+      console.log(data);
       var row, flight;
 
       if (data.flightTracks.length === 0) console.log("no incoming flight tracks");
