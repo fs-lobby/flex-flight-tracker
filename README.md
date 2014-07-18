@@ -9,7 +9,7 @@ You can now use npm to install the other dependencies:
 npm install -g grunt-cli
 npm install
 ```
-Now create a file at the project root called js.json:
+Now create a file at the project root called fs.json:
 ```
 touch fs.json
 ```
