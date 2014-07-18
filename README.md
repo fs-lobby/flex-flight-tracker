@@ -1,4 +1,4 @@
-Flight Stats Flex API Sample Flight Tracker
+FlightStats Flex API Sample Flight Tracker
 ===================
 
 This project is intended to help developers easily add an animated flight tracker map to their applications. It's built using [Leaflet.js](www.leafletjs.com) and [D3.js](www.d3js.org) and compiled using [Grunt](www.gruntjs.com).
@@ -13,16 +13,16 @@ Now create a file at the project root called js.json:
 ```
 touch js.json
 ```
-and make it look something like this:
+and make it look something like the following. You will need a FlightStats app id and key from [the FlightStats devevloper portal](https://developer.flightstats.com/getting-started/).
+
 ```
 {
 	"appId": "YOUR_APP_ID",
 	"appKey": "YOUR_APP_KEY"
 }
 ```
-If you need a Flight Stats app id and key go to [the Flight Stats devevloper portal](https://developer.flightstats.com/getting-started/).
 
-You should be ready to get started. Run these two commands:
+You should be ready to get started. Run these two commands in separate terminals:
 ```
 npm start
 grunt watch
