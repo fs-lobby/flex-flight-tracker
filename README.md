@@ -1,6 +1,9 @@
 FlightStats Flex API Sample Flight Tracker
 ===================
 
+BETA SOFTWARE!!!
+Help us improve this project by opening issues for any bugs or feature requests OR fork it, fix it and open a pull request.
+
 This project is intended to help developers easily add an animated flight tracker map to their applications. It's built using [Leaflet.js](www.leafletjs.com) and [D3.js](www.d3js.org) and compiled using [Grunt](www.gruntjs.com).
 
 To get started install node.js and npm from [nodejs.org](http://nodejs.org/).
@@ -27,7 +30,7 @@ Run this command to generate your tracker HTML with your app id and key.
 grunt
 ```
 
-Run this command to watch for changes to source files.
+Run this command to watch for changes to source files. Source files include html files in the examples folder (which have app id and key injected and are then saved to the replace directory) and the javascript files in the src folder. These javascript files are concatenated and uglified to the dist folder, but the examples files point directly at the files in src to easy development. All you really need to know is to load the html files in /examples/replace and to modify the javascript files in /src - the rest should be grunt magic.
 ```
 grunt watch
 ```
