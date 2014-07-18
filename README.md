@@ -22,10 +22,20 @@ and make it look something like the following. You will need a FlightStats app i
 }
 ```
 
-You should be ready to get started. Run these two commands in separate terminals:
+Run this command to generate your tracker HTML with your app id and key.
 ```
-npm start
+grunt
+```
+
+Run this command to watch for changes to source files.
+```
 grunt watch
 ```
+
+You should be ready to get started. Run this command in a new terminal window to start a simple web server on port 8080.
+```
+npm start
+```
+
 You should now be able to access an index of flights at:
 [localhost:8080/examples/replace/index.html?airportId=PDX](http://localhost:8080/examples/replace/index.html?airportId=PDX)
