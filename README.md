@@ -34,7 +34,7 @@ Run this command to watch for changes to source files.
 ```
 grunt watch
 ```
-Source files include html files in the examples folder (which have app id and key injected and are then saved to the replace directory) and the javascript files in the src folder. These javascript files are concatenated and uglified to the dist folder, but the examples files point directly at the files in src to easy development. All you really need to know is to load the html files in /examples/replace and to modify the javascript files in /src - the rest should be grunt magic.
+Source files include html files in the examples folder (which have app id and key injected and are then saved to the replace directory) and the javascript files in the src folder. These javascript files are concatenated and uglified to the dist folder, but the example html files point directly at the files in src to easy development. All you really need to know is to load the html files in /examples/replace and to modify the javascript files in /src - the rest should be grunt magic.
 
 You should be ready to get started. Run this command in a new terminal window to start a simple web server on port 8080.
 ```
