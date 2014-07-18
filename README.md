@@ -13,7 +13,7 @@ Now create a file at the project root called js.json:
 ```
 touch js.json
 ```
-and make it look something like the following. You will need a FlightStats app ID and key go to [the FlightStats devevloper portal](https://developer.flightstats.com/getting-started/).
+and make it look something like the following. You will need a FlightStats app id and key from [the FlightStats devevloper portal](https://developer.flightstats.com/getting-started/).
 
 ```
 {
