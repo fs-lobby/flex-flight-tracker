@@ -41,7 +41,7 @@ You should be ready to get started. Run this command in a new terminal window to
 npm start
 ```
 
-MAJOR GOTCHA: Update your browser! There is/was a significant SVG rendering bug that can affect this project. See this issue for details.
+MAJOR GOTCHA: Update your browser! There is/was a significant SVG rendering bug that can affect this project. See [this](https://github.com/flightstats/flex-flight-tracker/issues/1) issue for details.
 
 You should now be able to access an index of flights at:
 [localhost:8080/examples/replace/index.html?airportId=PDX](http://localhost:8080/examples/replace/index.html?airportId=PDX)
