@@ -89,9 +89,8 @@
     };
 
     function cycleFlight () {
-      if (currentFlight != null && currentFlight.flight != null) {
-        flightMap.removeFlights();
-      }
+      flightMap.clear();
+      flightMap.removeFlights();
       currentFlight = {};
       currentFlight = flights[i];
       
@@ -109,10 +108,10 @@
           onTimeText.text(' On Time');
         }
         
-        flight.panTo(getRandomInt(5, 11));
+        flight.panTo(getRandomInt(9, 11));
         i++;
         if (i === flights.length) {
-          getFlights();
+          location.reload();
         }
       });
     }
