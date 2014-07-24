@@ -1,14 +1,14 @@
 var fsBasePath = '/data/';
 
 var Map = function(config) {
-	console.log("map config", config);
+	// console.log("map config", config);
 	var self = this;
 	config.subdomains = config.subdomains || 'abcd';
 	this.flexConfig = config.flexConfig;
 	this.flex = new Flex(this.flexConfig);
 	this.mapId = config.id || 'map';
-	this.map = L.map(this.mapId)
-		.setView([0, 0], 10)
+	this.map = L.map(this.mapId, config.leaflet)
+		.setView([0, 0], config.initialZoom || 10)
 		.addLayer(L.tileLayer(config.tiles, {'subdomains': config.subdomains}));
   	this.data = {};
 	this.svg = d3.select(this.map.getPanes().overlayPane).append('svg');
@@ -145,7 +145,7 @@ Map.prototype.addFlight = function(flightId, done) {
 			console.log(data.error.errorMessage);
 		}
 		else {
-			console.log("initializing flight", flightId);
+			// console.log("initializing flight", flightId);
 			flight.initialize(data);
 		}
 		if (done != null) done(err, flight);
@@ -156,9 +156,16 @@ Map.prototype.addAirport = function(flight) {
 
 };
 
+Map.prototype.clear = function() {
+	this.plans.html('');
+	this.arcs.html('');
+	this.points.html('');
+	this.planes.html('');
+	this.airports.html('');
+};
+
 Map.prototype.removeFlight = function(flight) {
 	flight.remove();
-	flight = {};
 	delete flight;
 };
 
@@ -175,7 +182,7 @@ Map.prototype.removeAirport = function(flight) {
 };
 
 Map.prototype.reset = function() {
-	console.log("reset");
+	// console.log("reset");
 	var bounds = this.map.getBounds();
 
 	var bottomLeft = this.projectLayerPoint([bounds.getWest(), bounds.getSouth()]),
@@ -197,7 +204,7 @@ Map.prototype.reset = function() {
 };
 
 Map.prototype.saveAnimationPositions = function() {
-  console.log("saveAnimationPositions");
+  // console.log("saveAnimationPositions");
   // This function interpolates the geographic position of the plane using the transition progress.
   // This is called when zooming or panning starts so the plane is redrawn in the expected position.
   for (var flight in this.flights) {
@@ -216,7 +223,7 @@ Map.prototype.saveAnimationPositions = function() {
     	
     	// Yeah, something's wrong with this math - but we known progress should never be > 1
     	if (progress > 1) {
-    		console.log("progress is", progress);
+    		// console.log("progress is", progress);
     		progress = 1;
     	}
 

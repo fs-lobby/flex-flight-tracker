@@ -156,9 +156,12 @@ Flight.prototype.drawAirports = function() {
     .attr('transform', this.transformGenerator([this.arrivalAirport.longitude, this.arrivalAirport.latitude]));
 };
 
-Flight.prototype.panTo = function() {
+Flight.prototype.panTo = function(zoom) {
   if (this.untravelledPositions[0] != null) {
     this.map.map.panTo([this.untravelledPositions[0].lat, this.untravelledPositions[0].lon]);
+    if (zoom != null) {
+      this.map.map.setZoom(zoom);
+    }
   }
 };
 
@@ -406,7 +409,7 @@ Flight.prototype.showPlan = function() {
     this.plan.attr('stroke-opacity', this.planOpacity);  
   }
   else {
-    console.log('plan not defined for', this);
+    // console.log('plan not defined for', this);
   }
 };
 
@@ -415,7 +418,7 @@ Flight.prototype.hidePlan = function() {
     this.plan.attr('stroke-opacity', '0');
   }
   else {
-    console.log('plan not defined for', this);
+    // console.log('plan not defined for', this);
   }
 };
 
@@ -479,7 +482,7 @@ Flight.prototype.cancelTransitions = function() {
 };
 
 Flight.prototype.remove = function() {
-  console.log('removing flight', this.flightId);
+  // console.log('removing flight', this.flightId);
   this.plane.remove();
   this.plan.remove();
   this.removePoints();
@@ -673,7 +676,7 @@ Flight.prototype.transformGenerator = function(position, nextPosition) {
     return translate;
   }
   else {
-    console.log('transformGenerator recieved', position, nextPosition);
+    // console.log('transformGenerator recieved', position, nextPosition);
   }
 };
 

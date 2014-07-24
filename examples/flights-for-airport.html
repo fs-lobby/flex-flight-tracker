@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flight Tracker</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+    <link rel='stylesheet' href='@@./stylesheets/map-style.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+      .footer {
+        height: 50px;
+        width: 100%;
+        background-color: white;
+        opacity: 0.5;
+        -webkit-box-shadow: 0px -3px 5px 0px rgba(61,61,61,1);
+        -moz-box-shadow: 0px -3px 5px 0px rgba(61,61,61,1);
+        box-shadow: 0px -3px 5px 0px rgba(61,61,61,1);
+        font-family: 'Open Sans Condensed', sans-serif;
+        padding-left: 10px;
+      }
+
+      .footer span {
+        font-size: 40px;
+        line-height: 45px;
+      }
+
+      .delay {
+        color: red;
+      }
+
+      .on-time {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="map" id="map"></div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+    <script src="@@../src/flex.js"></script>
+    <script src="@@../src/flight.js"></script>
+    <script src="@@../src/map.js"></script>
+    <script type="text/javascript">
+
+    var airportId = window.location.search.replace("?airportId=", "");
+    
+    var mapConfig = {
+      'tiles': 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
+      'subdomains': '1234',
+      'leaflet': {
+        'zoomControl': false
+      },
+      'flexConfig': {
+        'appId': '@@__APP_ID__',
+        'appKey': '@@__APP_KEY__'
+      },
+      'flightConfig': {
+        'pathOpacity': 0.5,
+        'drawPlan': true,
+        'planOpacity': 0.3
+      }
+    };
+
+    var flightMap = new Map(mapConfig);
+    var controlContainer = d3.select('.leaflet-control-container');
+
+    var footer = controlContainer.append('div')
+      .attr('class', 'leaflet-bottom footer');
+
+    var flightDescription = footer.append('span')
+      .text('Loading...');
+    var delayText = footer.append('span').attr('class', 'delay');
+    var onTimeText = footer.append('span').attr('class', 'on-time');
+
+    var flights = [];
+    var currentFlight = null;
+    var i;
+
+    getFlights();
+
+    function getFlights() {
+      flightMap.flex.fetchActiveIncomingFlightsForAirport(airportId, {'maxPositions': 5}, function(err, data) {
+        flights = data.flightTracks;
+        i = 0;
+        cycleFlight();
+        setInterval(cycleFlight, 30000);
+      });
+    };
+
+    function cycleFlight () {
+      if (currentFlight != null && currentFlight.flight != null) {
+        flightMap.removeFlights();
+      }
+      currentFlight = {};
+      currentFlight = flights[i];
+      
+      flightMap.addFlight(currentFlight.flightId, function(err, flight) {
+        // console.log(err, flight);
+        currentFlight.flight = flight;
+        flightDescription.text(flight.data.flightTrack.carrierFsCode + ' ' + flight.data.flightTrack.flightNumber + ' | ' + flight.departureAirportCode + ' to ' + flight.arrivalAirportCode + ' |');
+
+        if (flight.data.flightTrack.delayMinutes != null && flight.data.flightTrack.delayMinutes > 0) {
+          onTimeText.text('');
+          delayText.text(' Delayed ' + flight.data.flightTrack.delayMinutes + ' Minutes');  
+        }
+        else {
+          delayText.text('');
+          onTimeText.text(' On Time');
+        }
+        
+        flight.panTo(getRandomInt(5, 11));
+        i++;
+        if (i === flights.length) {
+          getFlights();
+        }
+      });
+    }
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    </script>
+  </body>
+</html>
