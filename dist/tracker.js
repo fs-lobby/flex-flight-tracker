@@ -125,7 +125,7 @@ Flex.prototype.fetchActiveIncomingFlightsForAirport = function(fsAirportCode, op
 };
 
 Flex.prototype.fetchFlightTracksForFlight = function(flightId, options, done) {
-	console.log("fetchFlightTracksForFlight");
+	// console.log("fetchFlightTracksForFlight");
 	/* 
 	Options:
 	  - includeFlightPlan
@@ -237,8 +237,8 @@ var Flight = function(flightId, config, map) {
   this.map = map;
   this.planeIcon = config.icon || 'M11.544,23.594c0.3-0.008,0.498,0.041,0.509,0.316s0.447,0.236,0.447,0.236s0.437,0.039,0.447-0.236 c0.012-0.275,0.209-0.324,0.509-0.316c0.233,0.004,1.563,0.521,2.243,0.641c0.668,0.119,1.425-0.398-0.043-1.387 c-0.555-0.373-1.594-1.127-1.807-1.355c-0.143-0.154-0.129-3.689-0.142-4.832s0-2.453,0-2.453s0.052-0.588,0.122-0.594 c0.071-0.008,7.27,2.914,8.619,3.617c1.35,0.705,2.569,1.334,2.566,0.367c0,0,0.214-1.195-3.145-3.332 c-3.358-2.138-3.764-2.522-3.764-2.522l-0.464-0.328c0.001-0.019,0.006-0.036,0.006-0.055V10.25c0-0.441-0.357-0.798-0.799-0.798 s-0.799,0.357-0.799,0.798v0.042l-2.066-1.458c0,0-0.101-0.363-0.112-0.556c-0.014-0.194,0.06-3.191-0.026-4.249 c-0.071-0.884-0.524-3.28-1.346-3.28l0,0l0,0c-0.821,0-1.274,2.396-1.346,3.28c-0.086,1.058-0.013,4.055-0.026,4.249 c-0.013,0.193-0.113,0.556-0.113,0.556l-2.066,1.458V10.25c0-0.441-0.357-0.798-0.798-0.798c-0.44,0-0.799,0.357-0.799,0.798v1.111 c0,0.019,0.004,0.036,0.005,0.055l-0.464,0.328c0,0-0.404,0.384-3.762,2.522c-3.358,2.137-3.146,3.332-3.146,3.332 c-0.002,0.967,1.217,0.338,2.567-0.367c1.35-0.703,8.547-3.625,8.619-3.617c0.071,0.006,0.123,0.594,0.123,0.594 s0.013,1.311,0,2.453s0.001,4.678-0.142,4.832c-0.213,0.229-1.251,0.982-1.807,1.355c-1.467,0.988-0.711,1.506-0.043,1.387 C9.982,24.115,11.312,23.598,11.544,23.594z';
   this.planeIconUrl = config.planeIconUrl;
-  this.planeIconSize = config.planeIconSize || 26;
   setConfig('planeIconSize', config.planeIconSize, 26);
+  setConfig('planeIconScale', config.planeIconScale, 1);
   this.planeIconRotation = config.planeIconRotation || 0;
   this.planeIconColor = config.planeIconColor || '#FFFFFF';
   setConfig('planeIconOpacity', config.planeIconOpacity, 1);
@@ -274,7 +274,8 @@ var Flight = function(flightId, config, map) {
     this.plane = map.planes.append('svg:image')
       .attr('xlink:href', this.planeIconUrl)
       .attr('height', this.planeIconSize + 'px')
-      .attr('width', this.planeIconSize + 'px');
+      .attr('width', this.planeIconSize + 'px')
+      .attr('transform', 'scale(' + this.planeIconScale + ')');
   }
   else if (this.planeIcon != null && this.planeIcon.length > 0) {
     this.plane = map.planes.append('path')
@@ -878,7 +879,7 @@ Flight.prototype.transformGenerator = function(position, nextPosition) {
     return {
       'translate': translate,
       'rotate': rotate,
-      'transform': translate + '' + rotate
+      'transform': translate + '' + rotate + 'scale(' + this.planeIconScale + ')'
     };
   }
   // if (position != null && nextPosition != null) {
@@ -902,7 +903,7 @@ Flight.prototype.transformGenerator = function(position, nextPosition) {
   // }
   else if (position != null) {
     transform = this.map.projectContainerPoint([position[0], position[1]]);
-    translate = 'translate(' + transform[0] + ',' + transform[1] + ')';
+    translate = 'translate(' + transform[0] + ',' + transform[1] + ') scale(' + this.planeIconScale + ')';
     return translate;
   }
   else {
@@ -1142,7 +1143,7 @@ Map.prototype.addFlight = function(flightId, done) {
 
 	self.flights[flightId] = new Flight(flightId, self.flightConfig, self);
 	self.flights[flightId].fetchFlightTracks(null, function(err, data, flight) {
-		console.log(flightId);
+		// console.log(flightId);
 		if (err) {
 			console.log(err);
 		}

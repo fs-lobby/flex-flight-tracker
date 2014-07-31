@@ -118,7 +118,7 @@ Flex.prototype.fetchActiveIncomingFlightsForAirport = function(fsAirportCode, op
 };
 
 Flex.prototype.fetchFlightTracksForFlight = function(flightId, options, done) {
-	console.log("fetchFlightTracksForFlight");
+	// console.log("fetchFlightTracksForFlight");
 	/* 
 	Options:
 	  - includeFlightPlan

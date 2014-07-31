@@ -137,7 +137,7 @@ Map.prototype.addFlight = function(flightId, done) {
 
 	self.flights[flightId] = new Flight(flightId, self.flightConfig, self);
 	self.flights[flightId].fetchFlightTracks(null, function(err, data, flight) {
-		console.log(flightId);
+		// console.log(flightId);
 		if (err) {
 			console.log(err);
 		}

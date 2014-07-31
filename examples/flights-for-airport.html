@@ -44,6 +44,8 @@
     <script type="text/javascript">
 
     var airportId = window.location.search.replace("?airportId=", "");
+
+    var airportIds = ["ATL", "ORD", "LAX", "PEK", "LHR", "CDG", "IST", "SVO"];
     
     var mapConfig = {
       'tiles': 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
@@ -58,7 +60,9 @@
       'flightConfig': {
         'pathOpacity': 0.5,
         'drawPlan': true,
-        'planOpacity': 0.3
+        'planOpacity': 0.3,
+        'planeIconScale': 2,
+        'planeIconSize': 52
       }
     };
 
@@ -99,9 +103,13 @@
         currentFlight.flight = flight;
         flightDescription.text(flight.data.flightTrack.carrierFsCode + ' ' + flight.data.flightTrack.flightNumber + ' | ' + flight.departureAirportCode + ' to ' + flight.arrivalAirportCode + ' |');
 
-        if (flight.data.flightTrack.delayMinutes != null && flight.data.flightTrack.delayMinutes > 0) {
+        if (flight.data.flightTrack.delayMinutes != null && flight.data.flightTrack.delayMinutes === 1) {
           onTimeText.text('');
-          delayText.text(' Delayed ' + flight.data.flightTrack.delayMinutes + ' Minutes');  
+          delayText.text(' Delayed ' + flight.data.flightTrack.delayMinutes + ' Minute');
+        }
+        else if (flight.data.flightTrack.delayMinutes != null && flight.data.flightTrack.delayMinutes > 0) {
+          onTimeText.text('');
+          delayText.text(' Delayed ' + flight.data.flightTrack.delayMinutes + ' Minutes');
         }
         else {
           delayText.text('');
