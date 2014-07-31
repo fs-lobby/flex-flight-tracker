@@ -43,10 +43,6 @@
     <script src="@@../src/map.js"></script>
     <script type="text/javascript">
 
-    var airportId = window.location.search.replace("?airportId=", "");
-
-    var airportIds = ["ATL", "ORD", "LAX", "PEK", "LHR", "CDG", "IST", "SVO"];
-    
     var mapConfig = {
       'tiles': 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
       'subdomains': '1234',
@@ -65,6 +61,15 @@
         'planeIconSize': 52
       }
     };
+
+    if (getParameterByName("bw")) {
+      mapConfig.tiles = "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png";
+      mapConfig.subdomains = "abcd";
+    }
+
+    var airportId = getParameterByName("airportId");
+
+    var airportIds = ["ATL", "ORD", "LAX", "PEK", "LHR", "CDG", "IST", "SVO"];
 
     var flightMap = new Map(mapConfig);
     var controlContainer = d3.select('.leaflet-control-container');
@@ -126,6 +131,13 @@
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
     </script>
