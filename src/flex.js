@@ -197,6 +197,35 @@ Flex.prototype.fetchFlightsWithinBounds = function(bounds, options, done) {
 	});
 };
 
+Flex.prototype.fetchActiveAirports = function(options, done) {
+	/* 
+	Options:
+	  - extendedOptions
+	See https://developer.flightstats.com/api-docs/flightstatus/v2/flightsNear for documentation
+	*/
+
+	var airportPath = [
+	  this.fsBasePath,
+	  'airports/rest/v1/jsonp/active?appId=',
+	  this.appId,
+	  '&appKey=',
+	  this.appKey
+	];
+
+	for (var option in options) {
+		airportPath.push('&');
+		airportPath.push(option);
+		airportPath.push('=');
+		airportPath.push(options[option]);
+	}
+	  	
+	airportPath = airportPath.join('');
+
+	jsonpRequest(airportPath, "callback", function(err, response) {
+		done(err, response);
+	});
+};
+
 
 
 function jsonpRequest(url, callback, done) {

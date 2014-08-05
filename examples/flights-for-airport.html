@@ -57,19 +57,19 @@
         'pathOpacity': 0.5,
         'drawPlan': true,
         'planOpacity': 0.3,
-        'planeIconScale': 2,
-        'planeIconSize': 52
+        'planeIconScale': 1.5,
+        'planeIconSize': 39
       }
     };
 
     if (getParameterByName("bw")) {
       mapConfig.tiles = "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png";
       mapConfig.subdomains = "abcd";
+      mapConfig.flexConfig.planeIconColor = "#007AD1";
     }
 
     var airportId = getParameterByName("airportId");
-
-    var airportIds = ["ATL", "ORD", "LAX", "PEK", "LHR", "CDG", "IST", "SVO"];
+    var airports = [];
 
     var flightMap = new Map(mapConfig);
     var controlContainer = d3.select('.leaflet-control-container');
@@ -79,21 +79,42 @@
 
     var flightDescription = footer.append('span')
       .text('Loading...');
+
     var delayText = footer.append('span').attr('class', 'delay');
     var onTimeText = footer.append('span').attr('class', 'on-time');
+
+    flightMap.flex.fetchActiveAirports(null, function(err, data) {
+      if (err != null) {
+        console.log("Fetch Active Airports", err);  
+      }
+
+      airports = data.airports;
+      
+      getFlights();  
+    });
 
     var flights = [];
     var currentFlight = null;
     var i;
 
-    getFlights();
-
     function getFlights() {
+      var airportId = airportId || getRandomAirport(airports).fs;
       flightMap.flex.fetchActiveIncomingFlightsForAirport(airportId, {'maxPositions': 5}, function(err, data) {
-        flights = data.flightTracks;
-        i = 0;
-        cycleFlight();
-        setInterval(cycleFlight, 30000);
+        if (err != null) {
+          console.log("Fetch Active Incoming Flights", err);  
+        }
+        else {
+          console.log(data);
+          if (data.flightTracks.length > 0) {
+            flights = data.flightTracks;
+            i = 0;
+            cycleFlight();
+            setInterval(cycleFlight, 30000);
+          }
+          else {
+            getFlights();
+          }
+        }
       });
     };
 
@@ -103,6 +124,10 @@
       currentFlight = {};
       currentFlight = flights[i];
       
+      if (currentFlight == null) {
+        location.reload();
+      }
+
       flightMap.addFlight(currentFlight.flightId, function(err, flight) {
         // console.log(err, flight);
         currentFlight.flight = flight;
@@ -123,21 +148,22 @@
         
         flight.panTo();
         i++;
-        if (i === flights.length) {
-          location.reload();
-        }
       });
     }
 
+    function getRandomAirport(airports) {
+      return airports[Math.floor(Math.random() * airports.length)];
+    }
+
     function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.search);
+      return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
     </script>
