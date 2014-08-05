@@ -46,9 +46,6 @@
     var mapConfig = {
       'tiles': 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
       'subdomains': '1234',
-      'leaflet': {
-        'zoomControl': false
-      },
       'flexConfig': {
         'appId': '@@__APP_ID__',
         'appKey': '@@__APP_KEY__'
@@ -62,14 +59,19 @@
       }
     };
 
+    if (getParameterByName("zoomControl")) {
+      mapConfig.leaflet = {};
+      mapConfig.leaflet.zoomControl = false;
+    }
+
     if (getParameterByName("bw")) {
       mapConfig.tiles = "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png";
       mapConfig.subdomains = "abcd";
-      mapConfig.flexConfig.planeIconColor = "#007AD1";
+      mapConfig.flightConfig.planeIconColor = "#ec992c";
     }
 
     var airportId = getParameterByName("airportId");
-    var airports = [];
+    var airports = ["ORD","ATL","DFW","LAX","DEN","PEK","CLT","IAH","HND","JFK","FRA","LHR","YYZ","CDG","SFO","PHL","EWR","MSP","BOS","DTW","CAN","AMS","PHX","LGA","SEA","LAS","HKG","FCO","MUC","MIA","MAD","BCN","SYD","MCO","DCA","IAD","SLC","BWI","MEL","MEX","LGW","BKK","ZRH","BRU","CPH","MXP","CLE","CVG","VIE"];
 
     var flightMap = new Map(mapConfig);
     var controlContainer = d3.select('.leaflet-control-container');
@@ -83,28 +85,20 @@
     var delayText = footer.append('span').attr('class', 'delay');
     var onTimeText = footer.append('span').attr('class', 'on-time');
 
-    flightMap.flex.fetchActiveAirports(null, function(err, data) {
-      if (err != null) {
-        console.log("Fetch Active Airports", err);  
-      }
-
-      airports = data.airports;
-      
-      getFlights();  
-    });
-
     var flights = [];
     var currentFlight = null;
     var i;
 
+        getFlights();
+
+
     function getFlights() {
-      var airportId = airportId || getRandomAirport(airports).fs;
+      var airportId = airportId || getRandomAirport(airports);
       flightMap.flex.fetchActiveIncomingFlightsForAirport(airportId, {'maxPositions': 5}, function(err, data) {
         if (err != null) {
           console.log("Fetch Active Incoming Flights", err);  
         }
         else {
-          console.log(data);
           if (data.flightTracks.length > 0) {
             flights = data.flightTracks;
             i = 0;
