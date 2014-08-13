@@ -47,3 +47,14 @@ MAJOR GOTCHA: Update your browser! There is/was a significant SVG rendering bug 
 
 You should now be able to access an index of flights at:
 [localhost:8080/examples/replace/index.html?airportId=PDX](http://localhost:8080/examples/replace/index.html?airportId=PDX)
+
+```
+repeat
+	tell application "Google Chrome"
+		tell the active tab of its first window
+			reload
+		end tell
+	end tell
+	delay 1800
+end repeat
+```
