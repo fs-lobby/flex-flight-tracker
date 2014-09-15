@@ -30,7 +30,7 @@
     var flightMap = new Map(mapConfig);
 
     flightMap.addFlight(flightId, function(err, flight) {
-      console.log(err, flight);
+      if (!!err) console.log(err);
       flight.panTo();
     });
 

@@ -64,10 +64,9 @@
       mapConfig.leaflet.zoomControl = false;
     }
 
-    if (getParameterByName("bw")) {
-      mapConfig.tiles = "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png";
+    if (getParameterByName("tiles") === "watercolor") {
+      mapConfig.tiles = "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png";
       mapConfig.subdomains = "abcd";
-      mapConfig.flightConfig.planeIconColor = "#ec992c";
     }
 
     var airportId = getParameterByName("airportId");

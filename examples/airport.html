@@ -41,7 +41,6 @@
           flightMap.panTo([airport.latitude, airport.longitude]);
         }
       }
-      console.log(data);
       var row, flight;
 
       if (data.flightTracks.length === 0) console.log("no incoming flight tracks");
@@ -49,7 +48,7 @@
       for (var i = 0; i < data.flightTracks.length; i++) {
         flight = data.flightTracks[i];
         flightMap.addFlight(flight.flightId, function(err, flight) {
-          console.log(err, flight);
+          if (!!err) console.log(err);
         });
       }
     });
@@ -62,7 +61,7 @@
       for (var i = 0; i < data.flightTracks.length; i++) {
         flight = data.flightTracks[i];
         flightMap.addFlight(flight.flightId, function(err, flight) {
-          console.log(err, flight);
+          if (!!err) console.log(err);
         });
       }
     });

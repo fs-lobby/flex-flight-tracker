@@ -121,7 +121,7 @@ Flight.prototype.initialize = function(data) {
     this.initializePositions();
     this.buildAirports();
     // this.drawAirports();
-    this.drawPoints();
+    // this.drawPoints();
     this.drawArc();
     this.buildTransitions(true);
     this.initialized = true;
@@ -231,68 +231,68 @@ Flight.prototype.buildInterpolatedPositions = function() {
   }
 };
 
-Flight.prototype.drawPoints = function() {
-  var ref = {}, projectedPoint = {};
-  for (var i = this.travelledPositions.length - 1; i >= 0; i--) {
-    ref = this.travelledPositions[i];
-    projectedPoint = this.map.projectContainerPoint([ref.lon, ref.lat]);
-    if (this.map.map.getSize().contains(projectedPoint)) {
-      ref.svg = this.map.points.append('circle')
-        .datum(ref)
-        .attr('cx', projectedPoint[0])
-        .attr('cy', projectedPoint[1])
-        .attr('r', this.pathPointRadius)
-        .style('fill', this.pathColor)
-        .attr('fill-opacity', this.pathOpacity);
-      ref.drawn = true;
-    }
-  }
-  for (i = this.untravelledPositions.length - 1; i >= 0; i--) {
-    ref = this.untravelledPositions[i];
-    if (!ref.drawn) {
-      projectedPoint = this.map.projectContainerPoint([ref.lon, ref.lat]);
-      ref.svg = this.map.points.append('circle')
-        .datum(ref)
-        .attr('cx', projectedPoint[0])
-        .attr('cy', projectedPoint[1])
-        .attr('r', this.pathPointRadius)
-        .style('fill', this.pathColor)
-        .attr('fill-opacity', '0');
-      ref.drawn = true;
-    }
-  }
-};
+// Flight.prototype.drawPoints = function() {
+//   var ref = {}, projectedPoint = {};
+//   for (var i = this.travelledPositions.length - 1; i >= 0; i--) {
+//     ref = this.travelledPositions[i];
+//     projectedPoint = this.map.projectContainerPoint([ref.lon, ref.lat]);
+//     if (this.map.map.getSize().contains(projectedPoint)) {
+//       ref.svg = this.map.points.append('circle')
+//         .datum(ref)
+//         .attr('cx', projectedPoint[0])
+//         .attr('cy', projectedPoint[1])
+//         .attr('r', this.pathPointRadius)
+//         .style('fill', this.pathColor)
+//         .attr('fill-opacity', this.pathOpacity);
+//       ref.drawn = true;
+//     }
+//   }
+//   for (i = this.untravelledPositions.length - 1; i >= 0; i--) {
+//     ref = this.untravelledPositions[i];
+//     if (!ref.drawn) {
+//       projectedPoint = this.map.projectContainerPoint([ref.lon, ref.lat]);
+//       ref.svg = this.map.points.append('circle')
+//         .datum(ref)
+//         .attr('cx', projectedPoint[0])
+//         .attr('cy', projectedPoint[1])
+//         .attr('r', this.pathPointRadius)
+//         .style('fill', this.pathColor)
+//         .attr('fill-opacity', '0');
+//       ref.drawn = true;
+//     }
+//   }
+// };
 
-Flight.prototype.addPoints = function() {
-  var ref = {}, projectedPoint = {};
-  for (var i = this.untravelledPositions.length - 1; i >= 0; i--) {
-    ref = this.untravelledPositions[i];
-    if (!ref.drawn) {
-      projectedPoint = this.map.projectContainerPoint([ref.lon, ref.lat]);
-      ref.svg = this.map.points.append('circle')
-        .datum(ref)
-        .attr('cx', projectedPoint[0])
-        .attr('cy', projectedPoint[1])
-        .attr('r', this.pathPointRadius)
-        .style('fill', this.pathColor)
-        .attr('fill-opacity', '0');
-      ref.drawn = true;
-    }
-  }
-};
+// Flight.prototype.addPoints = function() {
+//   var ref = {}, projectedPoint = {};
+//   for (var i = this.untravelledPositions.length - 1; i >= 0; i--) {
+//     ref = this.untravelledPositions[i];
+//     if (!ref.drawn) {
+//       projectedPoint = this.map.projectContainerPoint([ref.lon, ref.lat]);
+//       ref.svg = this.map.points.append('circle')
+//         .datum(ref)
+//         .attr('cx', projectedPoint[0])
+//         .attr('cy', projectedPoint[1])
+//         .attr('r', this.pathPointRadius)
+//         .style('fill', this.pathColor)
+//         .attr('fill-opacity', '0');
+//       ref.drawn = true;
+//     }
+//   }
+// };
 
-Flight.prototype.removePoints = function() {
-  for (var i = this.travelledPositions.length - 1; i >= 0; i--) {
-    if (this.travelledPositions[i].svg != null) {
-      this.travelledPositions[i].svg.remove();
-    }
-  }
-  for (i = this.untravelledPositions.length - 1; i >= 0; i--) {
-    if (this.untravelledPositions[i].svg != null) {
-      this.untravelledPositions[i].svg.remove();
-    }
-  }
-};
+// Flight.prototype.removePoints = function() {
+//   for (var i = this.travelledPositions.length - 1; i >= 0; i--) {
+//     if (this.travelledPositions[i].svg != null) {
+//       this.travelledPositions[i].svg.remove();
+//     }
+//   }
+//   for (i = this.untravelledPositions.length - 1; i >= 0; i--) {
+//     if (this.untravelledPositions[i].svg != null) {
+//       this.untravelledPositions[i].svg.remove();
+//     }
+//   }
+// };
 
 Flight.prototype.buildTransitions = function(viewreset) {
   var position, nextPosition, transform;
@@ -371,7 +371,7 @@ Flight.prototype.addTransition = function(position, nextPosition, index) {
     .attr('transform', transform.transform)
     .each('end', function() {
       self.travelledPositions.push(self.untravelledPositions[0]);
-      self.showTravelledPoints();
+      // self.showTravelledPoints();
       self.untravelledPositions.shift();
       // self.untravelledPositions[0].svg.attr('fill-opacity', '1');
     })
@@ -382,27 +382,27 @@ Flight.prototype.addTransition = function(position, nextPosition, index) {
   position.hasAnimation = true;
 };
 
-Flight.prototype.showTravelledPoints = function() {
-  if (this.untravelledPositions[1].svg != null) {
-    this.untravelledPositions[1].svg.attr('fill-opacity', this.pathOpacity);
-  }
-  for (var i = 0; i < this.travelledPositions.length; i++) {
-    if (this.travelledPositions[i].svg != null) {
-      this.travelledPositions[i].svg.attr('fill-opacity', this.pathOpacity);
-    }
-  }
-};
+// Flight.prototype.showTravelledPoints = function() {
+//   if (this.untravelledPositions[1].svg != null) {
+//     this.untravelledPositions[1].svg.attr('fill-opacity', this.pathOpacity);
+//   }
+//   for (var i = 0; i < this.travelledPositions.length; i++) {
+//     if (this.travelledPositions[i].svg != null) {
+//       this.travelledPositions[i].svg.attr('fill-opacity', this.pathOpacity);
+//     }
+//   }
+// };
 
-Flight.prototype.hideTravelledPoints = function() {
-  if (this.untravelledPositions[1].svg != null) {
-    this.untravelledPositions[1].svg.attr('fill-opacity', '0');
-  }
-  for (var i = 0; i < this.travelledPositions.length; i++) {
-    if (this.travelledPositions[i].svg != null) {
-      this.travelledPositions[i].svg.attr('fill-opacity', '0');
-    }
-  }
-};
+// Flight.prototype.hideTravelledPoints = function() {
+//   if (this.untravelledPositions[1].svg != null) {
+//     this.untravelledPositions[1].svg.attr('fill-opacity', '0');
+//   }
+//   for (var i = 0; i < this.travelledPositions.length; i++) {
+//     if (this.travelledPositions[i].svg != null) {
+//       this.travelledPositions[i].svg.attr('fill-opacity', '0');
+//     }
+//   }
+// };
 
 Flight.prototype.showPlan = function() {
   // console.log('showPlan', this.plan.attr('stroke-opacity'));
@@ -457,7 +457,7 @@ Flight.prototype.draw = function(viewreset) {
       nextPosition = {}, 
       transform = '';
 
-  this.removePoints();
+  // this.removePoints();
   this.cancelTransitions();
 
   this.path.attr('d', self.map.invisibleLineProjector(self.reformatPositions(self.positions)));
@@ -475,7 +475,7 @@ Flight.prototype.draw = function(viewreset) {
   }
 
   this.buildTransitions(viewreset);
-  this.drawPoints();
+  // this.drawPoints();
 };
 
 Flight.prototype.cancelTransitions = function() {
@@ -486,7 +486,7 @@ Flight.prototype.remove = function() {
   // console.log('removing flight', this.flightId);
   this.plane.remove();
   this.plan.remove();
-  this.removePoints();
+  // this.removePoints();
   this.arc.remove();
 };
 
@@ -505,7 +505,7 @@ Flight.prototype.redraw = function() {
   }
 
   this.buildTransitions();
-  this.addPoints();
+  // this.addPoints();
 };
 
 // these should probably be private
