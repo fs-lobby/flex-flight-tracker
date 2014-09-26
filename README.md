@@ -1,3 +1,5 @@
+![alt tag](https://raw.githubusercontent.com/flightstats/flex-flight-tracker/master/readme-image.png)
+
 FlightStats Flex API Sample Flight Tracker
 ===================
 
