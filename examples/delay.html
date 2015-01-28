@@ -86,7 +86,13 @@
 
   var flex = new Flex(flexConfig);
 
-  var map = new L.Map("map", {center: [37.8, -96.9], zoom: 5})
+  var mapConfig = {center: [37.8, -96.9], zoom: 5};
+
+  if (getParameterByName("zoomControl") === 'false') {
+    mapConfig.zoomControl = false;
+  }
+
+  var map = new L.Map("map", mapConfig)
       .addLayer(new L.TileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {'subdomains': '1234'}));
 
   var weather = new L.TileLayer("http://www.flightstats.com/googlemaptiles/weather/noaa/radar/z{z}/radar_tile_z{z}x{x}y{y}.png").addTo(map);
@@ -117,5 +123,12 @@
       var airports = new Airports(data.delayIndexes);
       heat.setLatLngs(airports.latlngs());
     });
+  }
+
+  function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 </script>
