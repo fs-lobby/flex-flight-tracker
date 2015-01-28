@@ -18,9 +18,9 @@ var Map = function(config) {
 	this.arcs = this.svg.append('g')
 		.attr('class', 'leaflet-zoom-hide')
 		.attr('id', 'arcs');
-	// this.points = this.svg.append('g')
-	// 	.attr('class', 'leaflet-zoom-hide')
-	// 	.attr('id', 'points');
+	this.points = this.svg.append('g')
+		.attr('class', 'leaflet-zoom-hide')
+		.attr('id', 'points');
 	this.planes = this.svg.append('g')
 		.attr('class', 'leaflet-zoom-hide')
 		.attr('id', 'planes');
@@ -159,7 +159,7 @@ Map.prototype.addAirport = function(flight) {
 Map.prototype.clear = function() {
 	this.plans.html('');
 	this.arcs.html('');
-	// this.points.html('');
+	this.points.html('');
 	this.planes.html('');
 	this.airports.html('');
 };
@@ -189,7 +189,7 @@ Map.prototype.reset = function() {
 	    topRight = this.projectLayerPoint([bounds.getEast(), bounds.getNorth()]);
 
 	this.paths.selectAll("*").remove();
-	// this.points.selectAll("*").remove();
+	this.points.selectAll("*").remove();
 	this.svg
     .attr('width', topRight[0] - bottomLeft[0])
     .attr('height', bottomLeft[1] - topRight[1])
